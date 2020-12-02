@@ -71,6 +71,20 @@ public class CompanyServiceTest {
         //then
         assertEquals(employees,actual);
     }
+    @Test
+    void should_return_list_of_all_employee_when_getEmployeeWithSpecificCompany_given_invalid_companyID(){
+        //given
+        List <Employees> employees = new ArrayList<>();
+        employees.add(new Employees("Name1","121",12,"male",200));
+        employees.add(new Employees("Name2","111",14,"femail",2000));
+        Company company = new Company("Name1","123",1,employees);
+        when(companyRepository.findSpecificCompany("111")).thenReturn(null);
+        //when
+        List <Employees> actual = companyService.getEmployeesWithSpecificCompany("111");
 
+
+        //then
+        assertNull(actual);
+    }
 
 }
