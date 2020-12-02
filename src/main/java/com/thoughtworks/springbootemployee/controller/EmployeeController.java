@@ -14,37 +14,38 @@ public class EmployeeController {
     private List<Employees> employees = new ArrayList<>();
 
     @GetMapping
-    public  List<Employees> getAll(){
+    public List<Employees> getAll() {
         return employees;
     }
 
     @GetMapping("/{employeeID}")
-    public Employees getOneEmployee(@PathVariable String employeeID){
-        return employees.stream().filter(employees->employees.getEmployeeID().equals(employeeID)).findFirst().orElse(null);
+    public Employees getOneEmployee(@PathVariable String employeeID) {
+        return employees.stream().filter(employees -> employees.getEmployeeID().equals(employeeID)).findFirst().orElse(null);
 
     }
-    @GetMapping(params={"page","pageSize"})
-    public List<Employees> getAllEmployee(@RequestParam int page, @RequestParam int pageSize){
+
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Employees> getAllEmployee(@RequestParam int page, @RequestParam int pageSize) {
         //employees.add(new Employees("pater","123",12,1000,"male"));
-        return getPage(employees,page,pageSize);
+        return getPage(employees, page, pageSize);
     }
 
     /**
      * returns a view (not a new list) of the sourceList for the
      * range based on page and pageSize
+     *
      * @param sourceList
-     * @param page, page number should start from 1
+     * @param page,      page number should start from 1
      * @param pageSize
-     * @return
-     * custom error can be given instead of returning emptyList
+     * @return custom error can be given instead of returning emptyList
      */
     public static <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
-        if(pageSize <= 0 || page <= 0) {
+        if (pageSize <= 0 || page <= 0) {
             throw new IllegalArgumentException("invalid page size: " + pageSize);
         }
 
         int fromIndex = (page - 1) * pageSize;
-        if(sourceList == null || sourceList.size() <= fromIndex){
+        if (sourceList == null || sourceList.size() <= fromIndex) {
             return Collections.emptyList();
         }
 
@@ -52,15 +53,26 @@ public class EmployeeController {
         return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
     }
 
-    @GetMapping(params={"gender"})
-    public List<Employees> getEmployeeWithSameGender(@RequestParam String gender){
-        return employees.stream().filter(employees->employees.getGender().equals(gender)).collect(Collectors.toList());
+    @GetMapping(params = {"gender"})
+    public List<Employees> getEmployeeWithSameGender(@RequestParam String gender) {
+        return employees.stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
     }
 
     @PostMapping
-    public Employees createNewEmployee( @RequestBody Employees newEmployee){
+    public Employees createNewEmployee(@RequestBody Employees newEmployee) {
         employees.add(newEmployee);
         return newEmployee;
+    }
+
+    @PutMapping("/{employeeID}")
+    public Employees updateEmployee(@PathVariable String employeeID, @RequestBody Employees employeeUpdate) {
+        employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
+                .findFirst()
+                .ifPresent(employee -> {
+                    employees.remove(employee);
+                    employees.add(employeeUpdate);
+                });
+        return employeeUpdate;
     }
 
 }
