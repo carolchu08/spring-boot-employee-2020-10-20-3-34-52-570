@@ -57,4 +57,10 @@ public class EmployeeController {
         return employees.stream().filter(employees->employees.getGender().equals(gender)).collect(Collectors.toList());
     }
 
+    @PostMapping
+    public Employees createNewEmployee( @RequestBody Employees newEmployee){
+        employees.add(newEmployee);
+        return newEmployee;
+    }
+
 }
