@@ -18,6 +18,11 @@ public class EmployeeController {
         return employees;
     }
 
+    @GetMapping("/{employeeID}")
+    public Employees getOneEmployee(@PathVariable String employeeID){
+        return employees.stream().filter(employees->employees.getEmployeeID().equals(employeeID)).findFirst().orElse(null);
+
+    }
 
 
 }
