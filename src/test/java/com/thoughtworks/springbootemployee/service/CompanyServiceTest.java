@@ -136,5 +136,22 @@ public class CompanyServiceTest {
         assertEquals(expectedCompany,actual);
 
     }
+    @Test
+    void should_return_updated_company_when_updateCompany_given_companyID() {
+        //given
+        Employees employees1 = new Employees("Name1","1",13,"male",100);
+        Employees employees2 = new Employees("Name2","2",13,"male",100);
+        List<Employees> employeeList = new ArrayList<>();
+        employeeList.add(employees1);
+       employeeList.add(employees2);
+        Company updateCompany = new Company("Name1","123",1,employeeList);
+        when(companyRepository.updateCompany("123",updateCompany)).thenReturn(updateCompany);
+        //when
+        Company actual= companyService.updateCompany("123",updateCompany);
+
+        //then
+        assertEquals(updateCompany,actual);
+
+    }
 
 }

@@ -24,4 +24,14 @@ public class CompanyRepository {
         company.add(updateCompany);
         return updateCompany;
     }
+
+    public Company updateCompany(String companyID, Company updatecompany) {
+        company.stream().filter(company1 -> company1.getCompanyID().equals(companyID))
+                .findFirst()
+                .ifPresent(company1 -> {
+                    company.remove(company1);
+                    company.add(updatecompany);
+                });
+        return updatecompany;
+    }
 }
