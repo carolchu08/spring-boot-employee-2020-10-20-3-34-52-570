@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +48,20 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(expectedEmployees,actual);
+
+    }
+    @Test
+    void should_return_null_when_getOne_given_a_valid_employee_id() {
+        //given
+        Employees expectedEmployees = new Employees("Ken","123",15,"male",1200);
+        when(employeeRepository.findOneEmployee("111")).thenReturn(null);
+
+
+        //when
+        Employees actual = employeeService.getOneEmployee("111");
+
+        //then
+        assertNull(actual);
 
     }
 
