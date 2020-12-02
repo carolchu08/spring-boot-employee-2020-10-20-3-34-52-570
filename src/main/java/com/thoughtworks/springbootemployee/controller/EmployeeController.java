@@ -31,7 +31,7 @@ public class EmployeeController {
     @GetMapping(params = {"page", "pageSize"})
     public List<Employees> getAllEmployee(@RequestParam int page, @RequestParam int pageSize) {
         //employees.add(new Employees("pater","123",12,1000,"male"));
-        return getPage(employees, page, pageSize);
+        return employeesService.getPagination(page,pageSize);
     }
 
     /**

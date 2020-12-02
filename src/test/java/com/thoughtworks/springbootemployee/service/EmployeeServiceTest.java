@@ -64,6 +64,28 @@ public class EmployeeServiceTest {
         assertNull(actual);
 
     }
+    @Test
+    void should_return_3_employees_when_getAllEmployeesWithPagination_given_employees_list_is_longer_than_3_and_pageNumber_is_1_and_pageSize_is_3() {
+        //given
+        Employees employees1 = new Employees("Name1","1",13,"male",100);
+        Employees employees2 = new Employees("Name2","2",13,"male",100);
+        Employees employees3 = new Employees("Name3","3",13,"male",100);
+        Employees employees4 = new Employees("Name4","4",13,"male",100);
+        List<Employees> expectedEmployees = new ArrayList<>();
+        expectedEmployees.add(employees1);
+        expectedEmployees.add(employees2);
+        expectedEmployees.add(employees3);
+
+
+        //when
+        when(employeeRepository.getPagination(1,3)).thenReturn(expectedEmployees);
+        List<Employees> actual = employeeService.getPagination(1,3);
+
+        //then
+        assertEquals(expectedEmployees,actual);
+        assertEquals(3,actual.size());
+    }
+
 
 
 
