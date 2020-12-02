@@ -74,5 +74,15 @@ public class EmployeeController {
                 });
         return employeeUpdate;
     }
+    @DeleteMapping("/{employeeID}")
+    public Employees deleteEmployee(@PathVariable String employeeID, @RequestBody Employees deleteEmployee) {
+        employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
+                .findFirst()
+                .ifPresent(employee -> {
+                    employees.remove(employee);
+                });
+        return deleteEmployee;
+    }
+
 
 }
