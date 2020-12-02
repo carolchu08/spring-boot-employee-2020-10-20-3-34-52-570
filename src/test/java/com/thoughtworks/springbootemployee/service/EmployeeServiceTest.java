@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,14 +74,13 @@ public class EmployeeServiceTest {
         expectedEmployees.add(employees1);
         expectedEmployees.add(employees2);
         expectedEmployees.add(employees3);
-
+        expectedEmployees.add(employees4);
 
         //when
-        when(employeeRepository.getPagination(1,3)).thenReturn(expectedEmployees);
+        when(employeeRepository.findAllEmployees()).thenReturn(expectedEmployees);
         List<Employees> actual = employeeService.getPagination(1,3);
 
         //then
-        assertEquals(expectedEmployees,actual);
         assertEquals(3,actual.size());
     }
     @Test
@@ -95,6 +93,22 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(expectedEmployee,actual);
+
+    }
+    @Test
+    void should_return_male_employee_when_getEmployeeWithMatchedGender_given_gender_of_employee_is_male() {
+        //given
+        Employees employee1 = new Employees("Peter","123",13,"male",2000);
+        Employees employee2 = new Employees("May","100",13,"female",2000);
+        List<Employees> expectedEmployee = new ArrayList<>();
+        expectedEmployee.add(employee2);
+        expectedEmployee.add(employee1);
+        when(employeeRepository.findAllEmployees()).thenReturn(expectedEmployee);
+        //when
+        List <Employees> actual= employeeService.getEmployeeWithSameGender("male");
+
+        //then
+        assertEquals(1,actual.size());
 
     }
 
