@@ -3,12 +3,13 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Employees;
 import com.thoughtworks.springbootemployee.repository.EmployeesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Service
 public class EmployeesService {
     @Autowired private EmployeesRepository employeesRepository;
 
@@ -17,13 +18,13 @@ public class EmployeesService {
     }
 
     public List<Employees> getAll() {
-        return employeesRepository.findAllEmployees();
+        return this.employeesRepository.findAllEmployees();
     }
     public Employees getOneEmployee(String employeeID) {
-        return employeesRepository.findOneEmployee(employeeID);
+        return this.employeesRepository.findOneEmployee(employeeID);
     }
     public List<Employees> getPagination(int page, int pageSize){
-        return getPage(employeesRepository.findAllEmployees(),page,pageSize);
+        return this.getPage(employeesRepository.findAllEmployees(),page,pageSize);
     }
     public static <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
         if (pageSize <= 0 || page <= 0) {
@@ -39,9 +40,12 @@ public class EmployeesService {
         return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
     }
     public Employees createEmployee(Employees newEmployee){
-        return employeesRepository.createEmployee(newEmployee);
+        return this.employeesRepository.createEmployee(newEmployee);
     }
     public List <Employees> getEmployeeWithSameGender(String gender){
-        return employeesRepository.findAllEmployees().stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
+        return this.employeesRepository.findAllEmployees().stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
+    }
+    public  Employees updateEmployee(String employeeID, Employees updateEmployee){
+        return this.employeesRepository.updateEmployee(employeeID,updateEmployee);
     }
 }

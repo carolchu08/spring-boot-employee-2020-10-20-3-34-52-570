@@ -111,7 +111,17 @@ public class EmployeeServiceTest {
         assertEquals(1,actual.size());
 
     }
+    @Test
+    void should_return_updated_employee_when_updateEmployee_given_employeeID() {
+        //given
+        Employees updateEmployee = new Employees("Jenny","123",13,"female",2000);
+        when(employeeRepository.updateEmployee("123",updateEmployee)).thenReturn(updateEmployee);
+        //when
+        Employees actual= employeeService.updateEmployee(updateEmployee.getEmployeeID(),updateEmployee);
 
+        //then
+        assertEquals(updateEmployee,actual);
+    }
 
 
 
