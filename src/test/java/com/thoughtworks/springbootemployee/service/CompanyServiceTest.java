@@ -170,5 +170,20 @@ public class CompanyServiceTest {
         assertNull(actual);
 
     }
+    @Test
+    void should_return_removed_company_when_deleteCompany_given_valid_companyID() {
+        //given
+        Employees employees1 = new Employees("Name1","1",13,"male",100);
+        Employees employees2 = new Employees("Name2","2",13,"male",100);
+        List<Employees> employeeList = new ArrayList<>();
+        employeeList.add(employees1);
+        employeeList.add(employees2);
+        Company deleteCompany = new Company("Name1","123",1,employeeList);
+        when(companyRepository.deleteCompany("123",deleteCompany)).thenReturn(deleteCompany);
+        //when
+        Company actual = companyService.deleteCompany("123",deleteCompany);
+        //then
+        assertEquals(deleteCompany,actual);
+    }
 
 }

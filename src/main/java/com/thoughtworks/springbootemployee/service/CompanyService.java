@@ -55,4 +55,8 @@ public class CompanyService {
     public Company updateCompany(String companyID, Company updateCompany) {
         return companyRepository.updateCompany(companyID,updateCompany);
     }
+
+    public Company deleteCompany(String companyID, Company deleteCompany) {
+        return companyRepository.deleteCompany(companyID,deleteCompany);
+    }
 }

@@ -34,4 +34,11 @@ public class CompanyRepository {
                 });
         return updatecompany;
     }
+
+    public Company deleteCompany(String companyID, Company deleteCompany) {
+        company.stream().filter(company1 -> company1.getCompanyID().equals(companyID))
+                .findFirst()
+                .ifPresent(company::remove);
+        return deleteCompany;
+    }
 }
