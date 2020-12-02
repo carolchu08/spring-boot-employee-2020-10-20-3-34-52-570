@@ -20,4 +20,8 @@ public class CompanyRepository {
                 .orElse(null);
     }
 
+    public Company createCompany(Company updateCompany) {
+        company.add(updateCompany);
+        return updateCompany;
+    }
 }

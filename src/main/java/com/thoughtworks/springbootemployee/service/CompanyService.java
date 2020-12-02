@@ -48,4 +48,7 @@ public class CompanyService {
         return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
     }
 
+    public Company createCompany(Company updateComapny) {
+        return companyRepository.createCompany(updateComapny);
+    }
 }

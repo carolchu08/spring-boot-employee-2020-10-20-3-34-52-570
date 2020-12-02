@@ -121,4 +121,20 @@ public class CompanyServiceTest {
         assertEquals(3,actual.size());
     }
 
+    @Test
+    void should_return_created_company_when_createCompany_given_no_company_in_database_and_a_new_company() {
+        //given
+        List <Employees> employees = new ArrayList<>();
+        employees.add(new Employees("Name1","121",12,"male",200));
+        employees.add(new Employees("Name2","111",14,"femail",2000));
+        Company expectedCompany = new Company("Name1","123",1,employees);
+        when(companyRepository.createCompany(expectedCompany)).thenReturn(expectedCompany);
+        //when
+        Company actual= companyService.createCompany(expectedCompany);
+
+        //then
+        assertEquals(expectedCompany,actual);
+
+    }
+
 }

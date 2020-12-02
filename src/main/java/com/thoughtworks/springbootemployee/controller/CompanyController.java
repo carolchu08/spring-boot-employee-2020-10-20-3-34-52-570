@@ -33,4 +33,8 @@ public class CompanyController {
     public List<Company> getAllComapny(@RequestParam int page, @RequestParam int pageSize){
         return companyService.getAllCompanyWithPage(page,pageSize);
     }
+    @PostMapping
+    public Company createCompany(@RequestBody Company updateCompany){
+        return companyService.createCompany(updateCompany);
+    }
 }
