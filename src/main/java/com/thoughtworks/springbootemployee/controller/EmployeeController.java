@@ -52,6 +52,9 @@ public class EmployeeController {
         return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
     }
 
-
+    @GetMapping(params={"gender"})
+    public List<Employees> getEmployeeWithSameGender(@RequestParam String gender){
+        return employees.stream().filter(employees->employees.getGender().equals(gender)).collect(Collectors.toList());
+    }
 
 }
