@@ -4,10 +4,7 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employees;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,5 +28,9 @@ public class CompanyController {
     @GetMapping("{companyID}/employees")
     public List<Employees> getEmployeesWithSpecificCompany(@PathVariable String companyID){
         return companyService.getEmployeesWithSpecificCompany(companyID);
+    }
+    @GetMapping(params={"page","pageSize"})
+    public List<Company> getAllComapny(@RequestParam int page, @RequestParam int pageSize){
+        return companyService.getAllCompanyWithPage(page,pageSize);
     }
 }
