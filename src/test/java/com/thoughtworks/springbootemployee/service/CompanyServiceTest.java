@@ -69,7 +69,7 @@ public class CompanyServiceTest {
 
 
         //then
-        assertEquals(expected,actual);
+        assertEquals(employees,actual);
     }
 
 

@@ -22,7 +22,10 @@ public class CompanyService {
     }
 
     public List<Employees> getEmployeesWithSpecificCompany(String companyID) {
-
+        Company specificCompany = this.getSpecificCompany(companyID);
+        if(specificCompany!=null){
+            return specificCompany.getEmployees();
+        }
         return null;
     }
 }
