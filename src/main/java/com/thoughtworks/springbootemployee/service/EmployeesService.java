@@ -24,4 +24,7 @@ public class EmployeesService {
     public List<Employees> getPagination(int page, int pageSize){
         return employeesRepository.getPagination(page,pageSize);
     }
+    public Employees createEmployee(Employees newEmployee){
+        return employeesRepository.createEmployee(newEmployee);
+    }
 }

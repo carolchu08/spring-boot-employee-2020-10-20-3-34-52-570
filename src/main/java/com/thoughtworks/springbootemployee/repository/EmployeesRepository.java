@@ -31,4 +31,8 @@ public class EmployeesRepository {
         // toIndex exclusive
         return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
     }
+    public Employees createEmployee (Employees newEmployee){
+        employees.add(newEmployee);
+        return newEmployee;
+    }
 }

@@ -85,7 +85,18 @@ public class EmployeeServiceTest {
         assertEquals(expectedEmployees,actual);
         assertEquals(3,actual.size());
     }
+    @Test
+    void should_return_created_employee_when_createEmployee_given_no_employee_in_database_and_a_new_employee() {
+        //given
+        Employees expectedEmployee = new Employees("Peter","123",13,"male",2000);
+        when(employeeRepository.createEmployee(expectedEmployee)).thenReturn(expectedEmployee);
+        //when
+        Employees actual= employeeService.createEmployee(expectedEmployee);
 
+        //then
+        assertEquals(expectedEmployee,actual);
+
+    }
 
 
 
