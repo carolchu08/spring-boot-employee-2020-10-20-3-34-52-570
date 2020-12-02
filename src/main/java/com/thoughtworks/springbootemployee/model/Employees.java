@@ -2,10 +2,11 @@ package com.thoughtworks.springbootemployee.model;
 
 public class Employees {
     private String employeeName;
-    private  String employeeID;
-    private  Integer age;
-    private  Integer salary;
-    private  String gender;
+    private String employeeID;
+    private Integer age;
+    private Integer salary;
+    private String gender;
+
     public Employees() {
     }
 

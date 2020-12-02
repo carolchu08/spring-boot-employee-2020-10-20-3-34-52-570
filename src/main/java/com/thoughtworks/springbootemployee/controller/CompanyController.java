@@ -22,19 +22,22 @@ public class CompanyController {
     }
 
     @GetMapping("{companyID}")
-    public Company getSpecificCompany(@PathVariable String companyID){
+    public Company getSpecificCompany(@PathVariable String companyID) {
         return companyService.getSpecificCompany(companyID);
     }
+
     @GetMapping("{companyID}/employees")
-    public List<Employees> getEmployeesWithSpecificCompany(@PathVariable String companyID){
+    public List<Employees> getEmployeesWithSpecificCompany(@PathVariable String companyID) {
         return companyService.getEmployeesWithSpecificCompany(companyID);
     }
-    @GetMapping(params={"page","pageSize"})
-    public List<Company> getAllComapny(@RequestParam int page, @RequestParam int pageSize){
-        return companyService.getAllCompanyWithPage(page,pageSize);
+
+    @GetMapping(params = {"page", "pageSize"})
+    public List<Company> getAllComapny(@RequestParam int page, @RequestParam int pageSize) {
+        return companyService.getAllCompanyWithPage(page, pageSize);
     }
+
     @PostMapping
-    public Company createCompany(@RequestBody Company updateCompany){
+    public Company createCompany(@RequestBody Company updateCompany) {
         return companyService.createCompany(updateCompany);
     }
 }

@@ -1,10 +1,8 @@
 package com.thoughtworks.springbootemployee.repository;
 
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employees;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.ArrayList;;
 import java.util.List;
 
 public class CompanyRepository {
@@ -15,7 +13,7 @@ public class CompanyRepository {
     }
 
     public Company findSpecificCompany(String companyID) {
-       return company.stream().filter(company1 -> company1.getCompanyID().equals(companyID))
+        return company.stream().filter(company1 -> company1.getCompanyID().equals(companyID))
                 .findFirst()
                 .orElse(null);
     }

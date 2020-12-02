@@ -19,7 +19,7 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employees> getAll() {
-        return employeesService.getAll();
+        return employeesService.getAllEmployees();
     }
 
     @GetMapping("/{employeeID}")
@@ -29,9 +29,9 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Employees> getAllEmployee(@RequestParam int page, @RequestParam int pageSize) {
+    public List<Employees> getAllEmployeeWithPage(@RequestParam int page, @RequestParam int pageSize) {
         //employees.add(new Employees("pater","123",12,1000,"male"));
-        return employeesService.getPagination(page,pageSize);
+        return employeesService.getPagination(page, pageSize);
     }
 
     /**
@@ -78,6 +78,7 @@ public class EmployeeController {
                 });
         return employeeUpdate;
     }
+
     @DeleteMapping("/{employeeID}")
     public Employees deleteEmployee(@PathVariable String employeeID, @RequestBody Employees deleteEmployee) {
         employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))

@@ -28,7 +28,7 @@ public class EmployeeServiceTest {
         when(employeeRepository.findAllEmployees()).thenReturn(expected);
 
         //when
-        List<Employees> actual = employeeService.getAll();
+        List<Employees> actual = employeeService.getAllEmployees();
 
 
         //then

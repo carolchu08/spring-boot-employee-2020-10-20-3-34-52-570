@@ -3,10 +3,10 @@ package com.thoughtworks.springbootemployee.model;
 import java.util.List;
 
 public class Company {
-    private String companyName;
-    private  Integer employeeNum;
-    private List<Employees> employees;
-    private String companyID;
+    private final String companyName;
+    private final Integer employeeNum;
+    private final List<Employees> employees;
+    private final String companyID;
 
     public Company(String companyName,String companyID, Integer employeeNum, List<Employees> employees) {
         this.companyName = companyName;

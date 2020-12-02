@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
+
     public List<Company> getAll() {
         return companyRepository.findAllCompany();
     }
@@ -24,14 +24,14 @@ public class CompanyService {
 
     public List<Employees> getEmployeesWithSpecificCompany(String companyID) {
         Company specificCompany = this.getSpecificCompany(companyID);
-        if(specificCompany!=null){
+        if (specificCompany != null) {
             return specificCompany.getEmployees();
         }
         return null;
     }
 
     public List<Company> getAllCompanyWithPage(int page, int pageSize) {
-        return getPage(companyRepository.findAllCompany(),page,pageSize);
+        return getPage(companyRepository.findAllCompany(), page, pageSize);
     }
 
     public static <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
@@ -53,10 +53,10 @@ public class CompanyService {
     }
 
     public Company updateCompany(String companyID, Company updateCompany) {
-        return companyRepository.updateCompany(companyID,updateCompany);
+        return companyRepository.updateCompany(companyID, updateCompany);
     }
 
     public Company deleteCompany(String companyID, Company deleteCompany) {
-        return companyRepository.deleteCompany(companyID,deleteCompany);
+        return companyRepository.deleteCompany(companyID, deleteCompany);
     }
 }
