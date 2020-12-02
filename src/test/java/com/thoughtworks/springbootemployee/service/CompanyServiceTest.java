@@ -29,7 +29,7 @@ public class CompanyServiceTest {
         //given
         List <Employees> employees = new ArrayList<>();
         employees.add(new Employees("Name1","123",12,"male",200));
-        List<Company> expected = Collections.singletonList(new Company("Name1",1,employees));
+        List<Company> expected = Collections.singletonList(new Company("Name1","123",1,employees));
         when(companyRepository.findAllCompany()).thenReturn(expected);
 
         //when
@@ -40,4 +40,20 @@ public class CompanyServiceTest {
         assertEquals(1,actual.size());
 
     }
+    @Test
+    void should_return_specific_company_when_getSpecificCompany_given_companyID_123(){
+        //given
+        List <Employees> employees = new ArrayList<>();
+        employees.add(new Employees("Name1","123",12,"male",200));
+        Company expected = new Company("Name1","123",1,employees);
+        when(companyRepository.findSpecificCompany("123")).thenReturn(expected);
+
+        //when
+        Company actual = companyService.getSpecificCompany("123");
+
+
+        //then
+        assertEquals(expected,actual);
+    }
+
 }

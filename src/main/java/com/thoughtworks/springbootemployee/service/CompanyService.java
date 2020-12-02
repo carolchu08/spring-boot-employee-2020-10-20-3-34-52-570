@@ -13,4 +13,8 @@ public class CompanyService {
     public List<Company> getAll() {
         return companyRepository.findAllCompany();
     }
+
+    public Company getSpecificCompany(String companyID) {
+        return companyRepository.findSpecificCompany(companyID);
+    }
 }

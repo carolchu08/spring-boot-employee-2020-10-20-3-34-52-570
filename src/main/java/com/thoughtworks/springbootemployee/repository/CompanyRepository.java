@@ -11,4 +11,10 @@ public class CompanyRepository {
     public List<Company> findAllCompany() {
         return this.company;
     }
+
+    public Company findSpecificCompany(String companyID) {
+       return company.stream().filter(company1 -> company1.getCompanyID().equals(companyID))
+                .findFirst()
+                .orElse(null);
+    }
 }
