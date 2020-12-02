@@ -15,8 +15,10 @@ public class EmployeesService {
         this.employeesRepository = employeesRepository;
     }
 
-    @GetMapping
     public List<Employees> getAll() {
         return employeesRepository.findAllEmployees();
+    }
+    public Employees getOneEmployee(String employeeID) {
+        return employeesRepository.findOneEmployee(employeeID);
     }
 }

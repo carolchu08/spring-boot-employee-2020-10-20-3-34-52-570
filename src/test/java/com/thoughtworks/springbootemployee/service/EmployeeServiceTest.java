@@ -35,6 +35,20 @@ public class EmployeeServiceTest {
         assertEquals(1,actual.size());
 
     }
+    @Test
+    void should_return_the_employee_when_getOne_given_a_valid_employee_id() {
+        //given
+        Employees expectedEmployees = new Employees("Ken","123",15,"male",1200);
+        when(employeeRepository.findOneEmployee(any())).thenReturn(expectedEmployees);
+
+
+        //when
+        Employees actual = employeeService.getOneEmployee("123");
+
+        //then
+        assertEquals(expectedEmployees,actual);
+
+    }
 
 
 
