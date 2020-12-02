@@ -9,20 +9,22 @@ import java.util.List;
 
 @Repository
 public class EmployeesRepository {
-      List<Employees> employees = new ArrayList<>();
+    List<Employees> employees = new ArrayList<>();
 
-    public List<Employees> findAllEmployees (){
+    public List<Employees> findAllEmployees() {
         return this.employees;
     }
+
     public Employees findOneEmployee(String employeeID) {
         return employees.stream().filter(employees -> employees.getEmployeeID().equals(employeeID)).findFirst().orElse(null);
     }
 
-    public Employees createEmployee (Employees newEmployee){
+    public Employees createEmployee(Employees newEmployee) {
         employees.add(newEmployee);
         return newEmployee;
     }
-    public Employees updateEmployee (String employeeID, Employees updateEmployee){
+
+    public Employees updateEmployee(String employeeID, Employees updateEmployee) {
         employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
                 .findFirst()
                 .ifPresent(employee -> {
@@ -30,5 +32,14 @@ public class EmployeesRepository {
                     employees.add(updateEmployee);
                 });
         return updateEmployee;
+    }
+
+    public Employees deleteEmployee(String employeeID, Employees deleteEmployee) {
+        employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
+                .findFirst()
+                .ifPresent(employee -> {
+                    employees.remove(employee);
+                });
+        return deleteEmployee;
     }
 }

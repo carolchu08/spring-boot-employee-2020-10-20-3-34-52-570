@@ -122,7 +122,16 @@ public class EmployeeServiceTest {
         //then
         assertEquals(updateEmployee,actual);
     }
-
+    @Test
+    void should_return_removed_employee_when_deleteEmployee_given_employeeID() {
+        //given
+        Employees deleteEmployee = new Employees("Peter","123",13,"male",2000);
+        when(employeeRepository.deleteEmployee("123",deleteEmployee)).thenReturn(deleteEmployee);
+        //when
+        Employees actual = employeeService.deleteEmployee("123",deleteEmployee);
+        //then
+        assertEquals(deleteEmployee,actual);
+    }
 
 
 }
