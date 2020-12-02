@@ -123,7 +123,7 @@ public class EmployeeServiceTest {
         assertEquals(updateEmployee,actual);
     }
     @Test
-    void should_return_removed_employee_when_deleteEmployee_given_employeeID() {
+    void should_return_removed_employee_when_deleteEmployee_given_valid_employeeID() {
         //given
         Employees deleteEmployee = new Employees("Peter","123",13,"male",2000);
         when(employeeRepository.deleteEmployee("123",deleteEmployee)).thenReturn(deleteEmployee);
@@ -133,5 +133,15 @@ public class EmployeeServiceTest {
         assertEquals(deleteEmployee,actual);
     }
 
+    @Test
+    void should_return_null_when_deleteEmployee_given_invalid_employeeID() {
+        //given
+        Employees deleteEmployee = new Employees("Peter","123",13,"male",2000);
+        when(employeeRepository.deleteEmployee("111",deleteEmployee)).thenReturn(null);
+        //when
+        Employees actual = employeeService.deleteEmployee("111",deleteEmployee);
+        //then
+        assertNull(actual);
+    }
 
 }
