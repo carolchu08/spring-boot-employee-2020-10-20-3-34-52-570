@@ -21,7 +21,7 @@ public class CompanyService {
     }
 
     public Company getSpecificCompany(String companyID) {
-        return companyRepository.findById(companyID).orElse(null);
+        return companyRepository.findById(companyID).orElseThrow(RuntimeException::new);
     }
 
     public List<Employee> getEmployeesWithSpecificCompany(String companyID) {

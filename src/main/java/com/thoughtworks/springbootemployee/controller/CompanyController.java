@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/companies")
 public class CompanyController {
     private List<Company> company = new ArrayList<>();
     @Autowired
@@ -21,18 +21,18 @@ public class CompanyController {
         return companyService.getAll();
     }
 
-    @GetMapping("{companyID}")
+    @GetMapping("/{companyID}")
     public Company getSpecificCompany(@PathVariable String companyID) {
         return companyService.getSpecificCompany(companyID);
     }
 
-    @GetMapping("{companyID}/employees")
+    @GetMapping("/{companyID}/employees")
     public List<Employee> getEmployeesWithSpecificCompany(@PathVariable String companyID) {
         return companyService.getEmployeesWithSpecificCompany(companyID);
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Company> getAllComapny(@RequestParam int page, @RequestParam int pageSize) {
+    public List<Company> getAllCompany(@RequestParam int page, @RequestParam int pageSize) {
         return companyService.getAllCompanyWithPage(page, pageSize);
     }
 
@@ -40,4 +40,14 @@ public class CompanyController {
     public Company createCompany(@RequestBody Company updateCompany) {
         return companyService.createCompany(updateCompany);
     }
+    @PutMapping("/{companyID}")
+    public Company updateCompany(@PathVariable String companyID, @RequestBody Company company) {
+        return companyService.updateCompany(companyID,company);
+    }
+
+    @DeleteMapping("/{companyID}")
+    public void deleteCompany(@PathVariable String companyID) {
+        companyService.deleteCompany(companyID);
+    }
+
 }
