@@ -1,12 +1,10 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.model.Employees;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,45 +17,31 @@ public class EmployeesService {
         this.employeesRepository = employeesRepository;
     }
 
-    public List<Employees> getAllEmployees() {
+    public List<Employee> getAllEmployees() {
         return this.employeesRepository.findAllEmployees();
     }
 
-    public Employees getOneEmployee(String employeeID) {
+    public Employee getOneEmployee(String employeeID) {
         return this.employeesRepository.findOneEmployee(employeeID);
     }
 
-    public List<Employees> getPagination(int page, int pageSize) {
-        return this.getPage(employeesRepository.findAllEmployees(), page, pageSize);
+    public List<Employee> getPagination(int page, int pageSize) {
+        return employeesRepository.findAllEmployees().stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
     }
 
-    public static <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
-        if (pageSize <= 0 || page <= 0) {
-            throw new IllegalArgumentException("invalid page size: " + pageSize);
-        }
-
-        int fromIndex = (page - 1) * pageSize;
-        if (sourceList == null || sourceList.size() <= fromIndex) {
-            return Collections.emptyList();
-        }
-
-        // toIndex exclusive
-        return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
-    }
-
-    public Employees createEmployee(Employees newEmployee) {
+    public Employee createEmployee(Employee newEmployee) {
         return this.employeesRepository.createEmployee(newEmployee);
     }
 
-    public List<Employees> getEmployeeWithSameGender(String gender) {
+    public List<Employee> getEmployeeWithSameGender(String gender) {
         return this.employeesRepository.findAllEmployees().stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
     }
 
-    public Employees updateEmployee(String employeeID, Employees updateEmployee) {
+    public Employee updateEmployee(String employeeID, Employee updateEmployee) {
         return this.employeesRepository.updateEmployee(employeeID, updateEmployee);
     }
 
-    public Employees deleteEmployee(String employeeID, Employees deleteEmployee) {
+    public Employee deleteEmployee(String employeeID, Employee deleteEmployee) {
         return this.employeesRepository.deleteEmployee(employeeID, deleteEmployee);
     }
 }

@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.Employees;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class CompanyController {
     }
 
     @GetMapping("{companyID}/employees")
-    public List<Employees> getEmployeesWithSpecificCompany(@PathVariable String companyID) {
+    public List<Employee> getEmployeesWithSpecificCompany(@PathVariable String companyID) {
         return companyService.getEmployeesWithSpecificCompany(companyID);
     }
 

@@ -1,6 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
-import com.thoughtworks.springbootemployee.model.Employees;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,23 +13,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    private List<Employees> employees = new ArrayList<>();
+    private List<Employee> employees = new ArrayList<>();
     @Autowired
     private EmployeesService employeesService;
 
     @GetMapping
-    public List<Employees> getAll() {
+    public List<Employee> getAll() {
         return employeesService.getAllEmployees();
     }
 
     @GetMapping("/{employeeID}")
-    public Employees getOneEmployee(@PathVariable String employeeID) {
+    public Employee getOneEmployee(@PathVariable String employeeID) {
         return employeesService.getOneEmployee(employeeID);
 
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Employees> getAllEmployeeWithPage(@RequestParam int page, @RequestParam int pageSize) {
+    public List<Employee> getAllEmployeeWithPage(@RequestParam int page, @RequestParam int pageSize) {
         //employees.add(new Employees("pater","123",12,1000,"male"));
         return employeesService.getPagination(page, pageSize);
     }
@@ -58,18 +58,18 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"gender"})
-    public List<Employees> getEmployeeWithSameGender(@RequestParam String gender) {
+    public List<Employee> getEmployeeWithSameGender(@RequestParam String gender) {
         return employees.stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
     }
 
     @PostMapping
-    public Employees createNewEmployee(@RequestBody Employees newEmployee) {
+    public Employee createNewEmployee(@RequestBody Employee newEmployee) {
         employees.add(newEmployee);
         return newEmployee;
     }
 
     @PutMapping("/{employeeID}")
-    public Employees updateEmployee(@PathVariable String employeeID, @RequestBody Employees employeeUpdate) {
+    public Employee updateEmployee(@PathVariable String employeeID, @RequestBody Employee employeeUpdate) {
         employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
                 .findFirst()
                 .ifPresent(employee -> {
@@ -80,7 +80,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{employeeID}")
-    public Employees deleteEmployee(@PathVariable String employeeID, @RequestBody Employees deleteEmployee) {
+    public Employee deleteEmployee(@PathVariable String employeeID, @RequestBody Employee deleteEmployee) {
         employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
                 .findFirst()
                 .ifPresent(employee -> {

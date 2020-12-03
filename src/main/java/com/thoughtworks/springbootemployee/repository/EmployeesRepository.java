@@ -1,30 +1,29 @@
 package com.thoughtworks.springbootemployee.repository;
 
-import com.thoughtworks.springbootemployee.model.Employees;
+import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Repository
 public class EmployeesRepository {
-    List<Employees> employees = new ArrayList<>();
+    List<Employee> employees = new ArrayList<>();
 
-    public List<Employees> findAllEmployees() {
+    public List<Employee> findAllEmployees() {
         return this.employees;
     }
 
-    public Employees findOneEmployee(String employeeID) {
+    public Employee findOneEmployee(String employeeID) {
         return employees.stream().filter(employees -> employees.getEmployeeID().equals(employeeID)).findFirst().orElse(null);
     }
 
-    public Employees createEmployee(Employees newEmployee) {
+    public Employee createEmployee(Employee newEmployee) {
         employees.add(newEmployee);
         return newEmployee;
     }
 
-    public Employees updateEmployee(String employeeID, Employees updateEmployee) {
+    public Employee updateEmployee(String employeeID, Employee updateEmployee) {
         employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
                 .findFirst()
                 .ifPresent(employee -> {
@@ -34,7 +33,7 @@ public class EmployeesRepository {
         return updateEmployee;
     }
 
-    public Employees deleteEmployee(String employeeID, Employees deleteEmployee) {
+    public Employee deleteEmployee(String employeeID, Employee deleteEmployee) {
         employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
                 .findFirst()
                 .ifPresent(employee -> {
