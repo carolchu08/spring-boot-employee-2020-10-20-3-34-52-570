@@ -5,5 +5,4 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface CompanyRepository1 extends MongoRepository<Company,String> {
-
 }

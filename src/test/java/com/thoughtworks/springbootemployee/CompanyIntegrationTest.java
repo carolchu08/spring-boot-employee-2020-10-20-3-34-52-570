@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -179,33 +180,24 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("[]"));
     }
-  /*  @Test
-    void should_return_all_employees_when_get_all_given_repository_has_employees() throws Exception {
-        //given
-        Company company1 = new Company("companyA",20);
-        Company expected1 = companyRepository1.save(company1);
-        Company company2 = new Company("companyB",50);
-        Company expected2 = companyRepository1.save(company2);
-        Employee employee = new Employee("Ken", 49, "male", 8000, expected1.getCompanyID());
-        employeeRepository.save(employee);
 
+  @Test
+ /* public void should_return_employee_list_when_get_company_employee_list_given_company_and_employees() throws Exception {
+      //given
+      Company company = new Company();
+      company.setCompanyID("1");
+      Employee employee1 = new Employee("employee1", 12, "Male", 100, company.getCompanyID());
+      Employee employee2 = new Employee("employee2", 2, "Female", 150, company.getCompanyID());
+      companyRepository1.insert(company);
+      employeeRepository.insert(employee1);
+      employeeRepository.insert(employee2);
+      companyRepository1.save(company);
 
-        //when
-        //then
-        mockMvc.perform(get("/companies"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].companyID").value(expected1.getCompanyID()))
-                .andExpect(jsonPath("$[0].companyName").value(expected1.getCompanyName()))
-                .andExpect(jsonPath("$[0].employeeNum").value(20))
-                .andExpect(jsonPath("$[0].employees[0].employeeName").value("Ken"))
-                .andExpect(jsonPath("$[0].employees[0].age").value(49))
-                .andExpect(jsonPath("$[0].employees[0].gender").value("male"))
-                .andExpect(jsonPath("$[0].employees[0].salary").value(8000))
-                .andExpect(jsonPath("$[0].employees[0].companyID").value(expected1.getCompanyID()))
-                .andExpect(jsonPath("$[1].companyID").value(expected2.getCompanyID()))
-                .andExpect(jsonPath("$[1].companyName").value("companyB"))
-                .andExpect(jsonPath("$[1].employeeNum").value(50));
-    }*/
-
+      //when
+      mockMvc.perform(get("/companies/" + company.getCompanyID() + "/employees"))
+              .andExpect(status().isOk())
+              .andExpect(jsonPath("$", hasSize(2)))
+              .andExpect(jsonPath("$[0].employeeName").value("employee1"))
+              .andExpect(jsonPath("$[1].employeeName").value("employee2"));
+  }*/
 }
