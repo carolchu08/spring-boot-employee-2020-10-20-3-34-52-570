@@ -1,44 +1,15 @@
 package com.thoughtworks.springbootemployee.repository;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class EmployeeRepository {
-    List<Employee> employees = new ArrayList<>();
 
-    public List<Employee> findAllEmployees() {
-        return this.employees;
-    }
+public interface EmployeeRepository extends MongoRepository<Employee,String> {
 
-    public Employee findOneEmployee(String employeeID) {
-        return employees.stream().filter(employees -> employees.getEmployeeID().equals(employeeID)).findFirst().orElse(null);
-    }
 
-    public Employee createEmployee(Employee newEmployee) {
-        employees.add(newEmployee);
-        return newEmployee;
-    }
+    List<Employee> findAllByGender(String gender);
+    List<Employee> findAllByCompanyID(String companyID);
 
-    public Employee updateEmployee(String employeeID, Employee updateEmployee) {
-        employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
-                .findFirst()
-                .ifPresent(employee -> {
-                    employees.remove(employee);
-                    employees.add(updateEmployee);
-                });
-        return updateEmployee;
-    }
-
-    public Employee deleteEmployee(String employeeID, Employee deleteEmployee) {
-        employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
-                .findFirst()
-                .ifPresent(employee -> {
-                    employees.remove(employee);
-                });
-        return deleteEmployee;
-    }
 }

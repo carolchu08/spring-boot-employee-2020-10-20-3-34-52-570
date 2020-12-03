@@ -1,17 +1,19 @@
 package com.thoughtworks.springbootemployee.model;
 
-import java.util.List;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.util.List;
+@Document
 public class Company {
+    @MongoId
     private String companyName;
     private Integer employeeNum;
-    private List<Employee> employees;
     private String companyID;
 
-    public Company(String companyName, String companyID, Integer employeeNum, List<Employee> employees) {
+    public Company(String companyName, String companyID, Integer employeeNum) {
         this.companyName = companyName;
         this.employeeNum = employeeNum;
-        this.employees = employees;
         this.companyID = companyID;
     }
 
@@ -26,11 +28,20 @@ public class Company {
         return employeeNum;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
-    }
 
     public String getCompanyID() {
         return companyID;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public void setEmployeeNum(Integer employeeNum) {
+        this.employeeNum = employeeNum;
+    }
+
+    public void setCompanyID(String companyID) {
+        this.companyID = companyID;
     }
 }

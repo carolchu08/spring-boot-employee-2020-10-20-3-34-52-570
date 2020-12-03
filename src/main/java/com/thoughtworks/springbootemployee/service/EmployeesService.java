@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,30 +19,41 @@ public class EmployeesService {
     }
 
     public List<Employee> getAllEmployees() {
-        return this.employeeRepository.findAllEmployees();
+        return this.employeeRepository.findAll();
     }
 
     public Employee getOneEmployee(String employeeID) {
-        return this.employeeRepository.findOneEmployee(employeeID);
+        return this.employeeRepository.findById(employeeID).orElse(null);
     }
 
     public List<Employee> getPagination(int page, int pageSize) {
-        return employeeRepository.findAllEmployees().stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        return employeeRepository.findAll().stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
     }
 
     public Employee createEmployee(Employee newEmployee) {
-        return this.employeeRepository.createEmployee(newEmployee);
+        return this.employeeRepository.save(newEmployee);
     }
 
     public List<Employee> getEmployeeWithSameGender(String gender) {
-        return this.employeeRepository.findAllEmployees().stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
+        return employeeRepository.findAllByGender(gender);
     }
 
     public Employee updateEmployee(String employeeID, Employee updateEmployee) {
-        return this.employeeRepository.updateEmployee(employeeID, updateEmployee);
+        Employee originalEmployee = employeeRepository.findById(employeeID).orElse(null);
+        if(originalEmployee!=null) {
+            originalEmployee.setAge(updateEmployee.getAge());
+            originalEmployee.setEmployeeName(updateEmployee.getEmployeeName());
+            originalEmployee.setGender(updateEmployee.getGender());
+            originalEmployee.setSalary(updateEmployee.getSalary());
+            return this.employeeRepository.save(originalEmployee);
+        }
+        return null;
     }
 
-    public Employee deleteEmployee(String employeeID, Employee deleteEmployee) {
-        return this.employeeRepository.deleteEmployee(employeeID, deleteEmployee);
+    public void deleteEmployee(String employeeID) {
+       this.employeeRepository.deleteById(employeeID);
+    }
+    public List <Employee> getEmployeeWithSameCompanyID (String companyID){
+        return employeeRepository.findAllByCompanyID(companyID);
     }
 }

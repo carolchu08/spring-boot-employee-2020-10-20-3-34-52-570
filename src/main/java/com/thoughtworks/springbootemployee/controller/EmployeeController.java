@@ -34,60 +34,24 @@ public class EmployeeController {
         return employeesService.getPagination(page, pageSize);
     }
 
-    /**
-     * returns a view (not a new list) of the sourceList for the
-     * range based on page and pageSize
-     *
-     * @param sourceList
-     * @param page,      page number should start from 1
-     * @param pageSize
-     * @return custom error can be given instead of returning emptyList
-     */
-    public static <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
-        if (pageSize <= 0 || page <= 0) {
-            throw new IllegalArgumentException("invalid page size: " + pageSize);
-        }
-
-        int fromIndex = (page - 1) * pageSize;
-        if (sourceList == null || sourceList.size() <= fromIndex) {
-            return Collections.emptyList();
-        }
-
-        // toIndex exclusive
-        return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
-    }
-
     @GetMapping(params = {"gender"})
     public List<Employee> getEmployeeWithSameGender(@RequestParam String gender) {
-        return employees.stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
+        return employeesService.getEmployeeWithSameGender(gender);
     }
 
     @PostMapping
     public Employee createNewEmployee(@RequestBody Employee newEmployee) {
-        employees.add(newEmployee);
-        return newEmployee;
+       return employeesService.createEmployee(newEmployee);
     }
 
     @PutMapping("/{employeeID}")
     public Employee updateEmployee(@PathVariable String employeeID, @RequestBody Employee employeeUpdate) {
-        employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
-                .findFirst()
-                .ifPresent(employee -> {
-                    employees.remove(employee);
-                    employees.add(employeeUpdate);
-                });
-        return employeeUpdate;
+        return employeesService.updateEmployee(employeeID,employeeUpdate);
     }
 
     @DeleteMapping("/{employeeID}")
-    public Employee deleteEmployee(@PathVariable String employeeID, @RequestBody Employee deleteEmployee) {
-        employees.stream().filter(employee -> employee.getEmployeeID().equals(employeeID))
-                .findFirst()
-                .ifPresent(employee -> {
-                    employees.remove(employee);
-                });
-        return deleteEmployee;
+    public void deleteEmployee(@PathVariable String employeeID) {
+        employeesService.deleteEmployee(employeeID);
     }
-
 
 }
