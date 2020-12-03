@@ -1,19 +1,25 @@
 package com.thoughtworks.springbootemployee;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -92,6 +98,92 @@ public class EmployeeIntegrationTest {
                 .andExpect(jsonPath("$.gender").value("female"))
                 .andExpect(jsonPath("$.salary").value(10000))
                 .andExpect(jsonPath("$.companyID").value("6"));
+
+    }
+     @Test
+        public void should_return_exception_when_getOneEmployee_given_a_invalid_employee_id() throws Exception {
+         //given
+         Employee employee = new Employee("Sam", 18, "Male", 20000,"1");
+         Employee addedEmployee = this.employeeRepository.save(employee);
+         this.employeeRepository.deleteAll();
+
+         //when
+         //then
+         this.mockMvc.perform(get("/employees/" + addedEmployee.getEmployeeID()))
+                 .andExpect(status().isNotFound());
+
+    }
+    @Test
+    void should_return_2_employees_when_getAllEmployeesWithPagination_given_employees_list_is_longer_than_2_and_pageNumber_is_1_and_pageSize_is_2() throws Exception {
+    //given
+    employeeRepository.save(new Employee("Name1", 13, "male", 100,"1"));
+    employeeRepository.save(new Employee("Name2",  13, "male", 100,"1"));
+    employeeRepository.save(new Employee("Name3",  13, "male", 100,"1"));
+    employeeRepository.save(new Employee("Name4",  13, "male", 100,"1"));
+
+    //when
+        mockMvc.perform(get("/employees?page=1&pageSize=2"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].employeeID").isString())
+                .andExpect(jsonPath("$[0].employeeName").value("Name1"))
+                .andExpect(jsonPath("$[1].employeeName").value("Name2"));
+}
+    @Test
+    void should_return_male_employee_when_getEmployeeWithMatchedGender_given_gender_of_employee_is_male() throws Exception {
+        //given
+        //when
+        employeeRepository.save(new Employee("Name1",  13, "male", 100,"1"));
+        employeeRepository.save(new Employee("Name2",  13, "female", 100,"1"));
+        //then
+        mockMvc.perform(get("/employees?gender=male"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].employeeID").isString())
+                .andExpect(jsonPath("$[0].employeeName").value("Name1"))
+                .andExpect(jsonPath("$[0].gender").value("male"));
+
+    }
+    @Test
+    void should_return_updated_employee_when_updateEmployee_given_employeeID() throws Exception {
+        employeeRepository.save(new Employee("Peter", 19, "male", 999, "1"));
+        employeeRepository.save(new Employee("Ken", 29, "male", 999, "2"));
+        Employee employee = new Employee("Alan", 15, "male", 999, "3");
+        Employee expected = employeeRepository.save(employee);
+
+        String updateAsJson = "{\n" +
+                "    \"employeeName\": \"Alan\",\n" +
+                "    \"age\": 35,\n" +
+                "    \"gender\": \"male\",\n" +
+                "    \"salary\": 2000,\n" +
+                "    \"companyID\": \"1\"\n" +
+                "}";
+        Employee update = new Employee("Alan", 35, "male", 2000, "1");
+
+        //when
+        //then
+        mockMvc
+                .perform(
+                        put("/employees/" + expected.getEmployeeID())
+                                .contentType(APPLICATION_JSON)
+                                .content(updateAsJson)
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andExpect(jsonPath("$.employeeID").value(expected.getEmployeeID()))
+                .andExpect(jsonPath("$.employeeName").value(update.getEmployeeName()))
+                .andExpect(jsonPath("$.age").value(update.getAge()))
+                .andExpect(jsonPath("$.gender").value(update.getGender()))
+                .andExpect(jsonPath("$.salary").value(update.getSalary()))
+                .andExpect(jsonPath("$.companyID").value(update.getCompanyID()));
+    }
+    @Test
+    void should_return_removed_employee_when_deleteEmployee_given_valid_employeeID() throws Exception {
+        //given
+        Employee employee = new Employee("Alan", 15, "male", 999, "3");
+        Employee expected = employeeRepository.save(employee);
+        //when
+        mockMvc.perform(delete("/employees/"+expected.getEmployeeID()))
+                .andExpect(status().isOk());
+        //then
 
     }
     

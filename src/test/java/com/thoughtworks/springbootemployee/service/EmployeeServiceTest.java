@@ -8,6 +8,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +44,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_the_employee_when_getOne_given_a_valid_employee_id() {
+    void should_return_the_employee_when_getOne_given_a_valid_employee_id()  {
         //given
         Employee expectedEmployee = new Employee("Ken", "123", 15, "male", 1200,"1");
         when(employeeRepository.findById(any())).thenReturn(java.util.Optional.of(expectedEmployee));
@@ -57,17 +59,17 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_null_when_getOne_given_a_valid_employee_id() {
+    void should_return_null_when_getOne_given_a_invalid_employee_id()  {
         //given
         Employee expectedEmployee = new Employee("Ken", "123", 15, "male", 1200,"1");
         when(employeeRepository.findById("111")).thenReturn(Optional.empty());
 
 
         //when
-        Employee actual = employeeService.getOneEmployee("111");
+        Exception exception = assertThrows(ResponseStatusException.class, () -> employeeService.getOneEmployee("111"));
 
         //then
-        assertNull(actual);
+        assertEquals( HttpStatus.NOT_FOUND + " \"Information Not Found\"",exception.getMessage());
 
     }
 

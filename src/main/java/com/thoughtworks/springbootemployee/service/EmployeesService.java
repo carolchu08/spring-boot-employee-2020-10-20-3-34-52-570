@@ -3,7 +3,9 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +24,11 @@ public class EmployeesService {
         return this.employeeRepository.findAll();
     }
 
-    public Employee getOneEmployee(String employeeID) {
-        return this.employeeRepository.findById(employeeID).orElse(null);
+    public Employee getOneEmployee(String employeeID)  {
+        return this.employeeRepository.findById(employeeID).orElseThrow(()-> new ResponseStatusException(
+                HttpStatus.NOT_FOUND, "Information Not Found")
+        );
+
     }
 
     public List<Employee> getPagination(int page, int pageSize) {
@@ -45,6 +50,7 @@ public class EmployeesService {
             originalEmployee.setEmployeeName(updateEmployee.getEmployeeName());
             originalEmployee.setGender(updateEmployee.getGender());
             originalEmployee.setSalary(updateEmployee.getSalary());
+            originalEmployee.setCompanyID(updateEmployee.getCompanyID());
             return this.employeeRepository.save(originalEmployee);
         }
         return null;
