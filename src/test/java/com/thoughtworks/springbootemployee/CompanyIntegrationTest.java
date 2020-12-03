@@ -159,5 +159,26 @@ public class CompanyIntegrationTest {
 
 
     }
+    @Test
+    void should_return_empty_list_when_getAll_given_after_deleted_company() throws Exception {
+        //given
+        //when
+        //then
+        Company company3 = new Company("companyC",  1);
+        companyRepository1.save(company3);
+
+        mockMvc
+                .perform(
+                        delete("/companies/"+company3.getCompanyID())
+                )
+                .andExpect(status().isOk());
+        mockMvc
+                .perform(
+                        get("/companies")
+                )
+                .andExpect(status().isOk())
+                .andExpect(content().string("[]"));
+    }
+
 
 }
