@@ -79,7 +79,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_list_of_all_employee_when_getEmployeeWithSpecificCompany_given_invalid_companyID() {
+    void should_return_null_when_getEmployeeWithSpecificCompany_given_invalid_companyID() {
         //given
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee("Name1", "121", 12, "male", 200, "1"));
