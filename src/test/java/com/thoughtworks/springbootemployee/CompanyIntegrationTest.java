@@ -6,6 +6,7 @@ import com.thoughtworks.springbootemployee.repository.CompanyRepository1;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,8 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -117,6 +120,44 @@ public class CompanyIntegrationTest {
 
 
     }
+    @Test
+    void should_return_updated_company_when_updateCompany_given_companyID() throws Exception {
+        //given
 
+        Company company1 = new Company("companyA", 1);
+        Company company2 = new Company("companyB",  25);
+        Company company3 = new Company("companyC",  1);
+        companyRepository1.save(company1);
+        companyRepository1.save(company2);
+        companyRepository1.save(company3);
+        Company expected = new Company("companyE",30);
+        String updateAsJson ="{\n" +
+                "    \"companyName\": \"companyE\",\n" +
+                "    \"employeeNum\":\"30\"\n" +
+                "}";
+        mockMvc.perform(put("/companies/"+company1.getCompanyID())
+                .contentType(APPLICATION_JSON)
+                .content(updateAsJson))
+                .andExpect(jsonPath("$.companyID").value(company1.getCompanyID()))
+                .andExpect(jsonPath("$.companyName").value(expected.getCompanyName()))
+                .andExpect(jsonPath("$.employeeNum").value(expected.getEmployeeNum()));
+
+    }
+    @Test
+    void should_return_not_found_when_updateCompany_given_invalid_companyID() throws Exception {
+        //given
+
+        Company company1 = new Company("companyA", 1);
+        Company company2 = new Company("companyB",  25);
+        Company company3 = new Company("companyC",  1);
+        companyRepository1.save(company1);
+        companyRepository1.save(company2);
+        companyRepository1.save(company3);
+        companyRepository1.deleteAll();
+        mockMvc.perform(put("/companies/"+company1.getCompanyID()))
+                .andExpect(status().isBadRequest());
+
+
+    }
 
 }
