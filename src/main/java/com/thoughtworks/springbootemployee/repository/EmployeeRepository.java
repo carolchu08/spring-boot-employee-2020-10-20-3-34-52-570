@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class EmployeesRepository {
+public class EmployeeRepository {
     List<Employee> employees = new ArrayList<>();
 
     public List<Employee> findAllEmployees() {

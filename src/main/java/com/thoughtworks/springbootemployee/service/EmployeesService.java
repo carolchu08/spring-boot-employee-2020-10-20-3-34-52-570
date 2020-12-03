@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.EmployeesRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,37 +11,37 @@ import java.util.stream.Collectors;
 @Service
 public class EmployeesService {
     @Autowired
-    private final EmployeesRepository employeesRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public EmployeesService(EmployeesRepository employeesRepository) {
-        this.employeesRepository = employeesRepository;
+    public EmployeesService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     public List<Employee> getAllEmployees() {
-        return this.employeesRepository.findAllEmployees();
+        return this.employeeRepository.findAllEmployees();
     }
 
     public Employee getOneEmployee(String employeeID) {
-        return this.employeesRepository.findOneEmployee(employeeID);
+        return this.employeeRepository.findOneEmployee(employeeID);
     }
 
     public List<Employee> getPagination(int page, int pageSize) {
-        return employeesRepository.findAllEmployees().stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        return employeeRepository.findAllEmployees().stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
     }
 
     public Employee createEmployee(Employee newEmployee) {
-        return this.employeesRepository.createEmployee(newEmployee);
+        return this.employeeRepository.createEmployee(newEmployee);
     }
 
     public List<Employee> getEmployeeWithSameGender(String gender) {
-        return this.employeesRepository.findAllEmployees().stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
+        return this.employeeRepository.findAllEmployees().stream().filter(employees -> employees.getGender().equals(gender)).collect(Collectors.toList());
     }
 
     public Employee updateEmployee(String employeeID, Employee updateEmployee) {
-        return this.employeesRepository.updateEmployee(employeeID, updateEmployee);
+        return this.employeeRepository.updateEmployee(employeeID, updateEmployee);
     }
 
     public Employee deleteEmployee(String employeeID, Employee deleteEmployee) {
-        return this.employeesRepository.deleteEmployee(employeeID, deleteEmployee);
+        return this.employeeRepository.deleteEmployee(employeeID, deleteEmployee);
     }
 }
