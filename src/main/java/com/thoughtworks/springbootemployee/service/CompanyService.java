@@ -2,7 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
-import com.thoughtworks.springbootemployee.repository.CompanyRepository1;
+import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class CompanyService {
     @Autowired
-    private CompanyRepository1 companyRepository;
+    private CompanyRepository companyRepository;
+    @Autowired
     private EmployeeRepository employeeRepository;
 
     public List<Company> getAll() {
@@ -36,20 +38,21 @@ public class CompanyService {
     }
 
 
-    public Company createCompany(Company updateComapny) {
-        return companyRepository.save(updateComapny);
+    public Company createCompany(Company updateCompany) {
+        return companyRepository.save(updateCompany);
     }
 
-    public Company updateCompany(String companyID, Company updateCompany) {
-        Company originalCompany = companyRepository.findById(companyID).orElse(null);
-        if(originalCompany!=null ) {
-            updateCompany.setCompanyID(companyID);
-            return companyRepository.save(updateCompany);
+    public Company updateCompany(String companyID, Company updateCompanyInfo) throws ResponseStatusException {
+        companyRepository.findById(companyID).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Company Not Found"));
+            updateCompanyInfo.setCompanyID(companyID);
+            return companyRepository.save(updateCompanyInfo);
+
+    }
+
+    public void deleteCompany(String companyID) throws ResponseStatusException {
+        Company originalCompany = companyRepository.findById(companyID).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Company Not Found"));
+        if (originalCompany!=null) {
+            companyRepository.deleteById(companyID);
         }
-        return null;
-    }
-
-    public void deleteCompany(String companyID) {
-        companyRepository.deleteById(companyID);
     }
 }

@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class CompanyController {
         return companyService.updateCompany(companyID,company);
     }
 
-    @DeleteMapping("/{companyID}")
+    @DeleteMapping("/{companyID}")@ResponseStatus(HttpStatus.OK)
     public void deleteCompany(@PathVariable String companyID) {
         companyService.deleteCompany(companyID);
     }

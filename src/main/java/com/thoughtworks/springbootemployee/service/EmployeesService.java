@@ -44,20 +44,24 @@ public class EmployeesService {
     }
 
     public Employee updateEmployee(String employeeID, Employee updateEmployee) {
-        Employee originalEmployee = employeeRepository.findById(employeeID).orElse(null);
-        if(originalEmployee!=null) {
+        Employee originalEmployee = employeeRepository.findById(employeeID).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found"));
             originalEmployee.setAge(updateEmployee.getAge());
             originalEmployee.setEmployeeName(updateEmployee.getEmployeeName());
             originalEmployee.setGender(updateEmployee.getGender());
             originalEmployee.setSalary(updateEmployee.getSalary());
             originalEmployee.setCompanyID(updateEmployee.getCompanyID());
             return this.employeeRepository.save(originalEmployee);
-        }
-        return null;
     }
 
     public void deleteEmployee(String employeeID) {
-       this.employeeRepository.deleteById(employeeID);
+        Optional<Employee> originalEmployee = employeeRepository.findById(employeeID);
+        if(originalEmployee.isPresent()) {
+            this.employeeRepository.deleteById(employeeID);
+        }
+        else
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found");
+        }
     }
     public List <Employee> getEmployeeWithSameCompanyID (String companyID){
         return employeeRepository.findAllByCompanyID(companyID);
