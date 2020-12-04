@@ -45,14 +45,14 @@ public class EmployeeIntegrationTest {
     @Test
     public void should_return_employee_when_create_employee_given_employee() throws Exception {
         //given
-        String employeeAsJson =" {\n" +
-                "        \"employeeID\": \"5fc8bd2a50fa7733ae675adb\",\n" +
-                "        \"employeeName\": \"peter\",\n" +
-                "        \"age\": 13,\n" +
-                "        \"salary\": 10000,\n" +
-                "        \"gender\": \"male\",\n" +
-                "        \"companyID\": \"1\"\n" +
-                "    }";
+        String employeeAsJson ="{\n" +
+                "    \"employeeName\": \"Alan\",\n" +
+                "    \"age\":35,\n" +
+                "    \"gender\":\"male\",\n" +
+                "    \"salary\":2000,\n" +
+                "    \"companyID\":\"1\"\n" +
+                "\n" +
+                "}";
         //when
         //then
         mockMvc.perform(post("/employees")
@@ -60,10 +60,10 @@ public class EmployeeIntegrationTest {
                 .content(employeeAsJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.employeeID").isString())
-                .andExpect(jsonPath("$.employeeName").value("peter"))
-                .andExpect(jsonPath("$.age").value(13))
+                .andExpect(jsonPath("$.employeeName").value("Alan"))
+                .andExpect(jsonPath("$.age").value(35))
                 .andExpect(jsonPath("$.gender").value("male"))
-                .andExpect(jsonPath("$.salary").value(10000))
+                .andExpect(jsonPath("$.salary").value(2000))
                 .andExpect(jsonPath("$.companyID").value("1"));
 
         List<Employee> employeeList = employeeRepository.findAll();
@@ -143,12 +143,13 @@ public class EmployeeIntegrationTest {
 
         String updateAsJson = "{\n" +
                 "    \"employeeName\": \"Alan\",\n" +
-                "    \"age\": 35,\n" +
-                "    \"gender\": \"male\",\n" +
-                "    \"salary\": 2000,\n" +
-                "    \"companyID\": \"1\"\n" +
+                "    \"age\":35,\n" +
+                "    \"gender\":\"male\",\n" +
+                "    \"salary\":2000,\n" +
+                "    \"companyID\":\"1\"\n" +
+                "\n" +
                 "}";
-        Employee update = new Employee("Alan", 35, "male", 2000, "1");
+        Employee update = new Employee("Alan", 35, "male", 2000,"1");
 
         //when
         //then

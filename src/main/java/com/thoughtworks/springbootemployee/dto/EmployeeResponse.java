@@ -2,18 +2,23 @@ package com.thoughtworks.springbootemployee.dto;
 
 public class EmployeeResponse {
     private String employeeName;
-    private Integer Age;
-    private String Gender;
-    private Integer Salary;
+    private Integer age;
+    private String gender;
+    private Integer salary;
+    private String companyID;
+    private String employeeID;
 
     public EmployeeResponse() {
     }
 
-    public EmployeeResponse(String employeeName, Integer age, String gender, Integer salary) {
+    public EmployeeResponse(String employeeName, Integer age, String gender, Integer salary,String companyID,String employeeID) {
         this.employeeName = employeeName;
-        Age = age;
-        Gender = gender;
-        Salary = salary;
+        this.age = age;
+        this.gender = gender;
+        this.salary = salary;
+        this.employeeID = employeeID;
+        this.companyID =companyID;
+
     }
 
     public String getEmployeeName() {
@@ -25,26 +30,42 @@ public class EmployeeResponse {
     }
 
     public Integer getAge() {
-        return Age;
+        return age;
     }
 
     public void setAge(Integer age) {
-        Age = age;
+        this.age = age;
     }
 
     public String getGender() {
-        return Gender;
+        return gender;
     }
 
     public void setGender(String gender) {
-        Gender = gender;
+        this.gender = gender;
     }
 
     public Integer getSalary() {
-        return Salary;
+        return salary;
     }
 
     public void setSalary(Integer salary) {
-        Salary = salary;
+        this.salary = salary;
+    }
+
+    public String getEmployeeID() {
+        return employeeID;
+    }
+
+    public void setEmployeeID(String employeeID) {
+        this.employeeID = employeeID;
+    }
+
+    public String getCompanyID() {
+        return companyID;
+    }
+
+    public void setCompanyID(String companyID) {
+        this.companyID = companyID;
     }
 }
