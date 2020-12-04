@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.Exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{employeeID}")
-    public void deleteEmployee(@PathVariable String employeeID) {
+    public void deleteEmployee(@PathVariable String employeeID) throws EmployeeNotFoundException {
         employeesService.deleteEmployee(employeeID);
     }
 

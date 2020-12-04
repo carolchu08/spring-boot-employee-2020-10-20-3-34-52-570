@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,14 +54,14 @@ public class EmployeesService {
             return this.employeeRepository.save(originalEmployee);
     }
 
-    public void deleteEmployee(String employeeID) {
+    public void deleteEmployee(String employeeID) throws EmployeeNotFoundException {
         Optional<Employee> originalEmployee = employeeRepository.findById(employeeID);
         if(originalEmployee.isPresent()) {
             this.employeeRepository.deleteById(employeeID);
         }
         else
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found");
+            throw new EmployeeNotFoundException();
         }
     }
     public List <Employee> getEmployeeWithSameCompanyID (String companyID){

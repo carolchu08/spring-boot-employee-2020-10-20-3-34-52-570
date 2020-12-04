@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -125,7 +126,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_updated_company_when_updateCompany_given_companyID() {
+    void should_return_updated_company_when_updateCompany_given_companyID() throws CompanyNotFoundException {
         //given
 
         Company updateCompany = new Company("Name1", "123", 1);
@@ -146,24 +147,34 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_updated_company_when_updateCompany_given_invalid_companyID() {
+    void should_return_Company_Not_Found_when_updateCompany_given_invalid_companyID()  {
         //given
         Company updateCompany = new Company("Name1", "123", 1);
         when(companyRepository.findById("100")).thenReturn(Optional.empty());
         //when
-        Company actual = companyService.updateCompany("100", updateCompany);
+        //Company actual = companyService.updateCompany("100", updateCompany);
+        Exception exception = assertThrows(CompanyNotFoundException.class,()->companyService.updateCompany("100", updateCompany));
 
         //then
-        assertNull(actual);
+        assertEquals("Company Not Found", exception.getMessage());
 
     }
 
     @Test
-    void should_return_removed_company_when_deleteCompany_given_valid_companyID() {
+    void should_return_removed_company_when_deleteCompany_given_invalid_companyID() throws CompanyNotFoundException {
         //when
-        companyService.deleteCompany("123");
+
         //then
-        verify(companyRepository, times(1)).deleteById("123");
+        Exception exception = assertThrows(CompanyNotFoundException.class,()-> companyService.deleteCompany("123"));
+        assertEquals("Company Not Found", exception.getMessage());
+    }
+    @Test
+    void  should_throw_CompanyNotFoundException_and_have_a_company_removed_when_remove() throws CompanyNotFoundException {
+        //when
+
+        //then
+        Exception exception = assertThrows(CompanyNotFoundException.class,()-> companyService.deleteCompany("123"));
+        assertEquals("Company Not Found", exception.getMessage());
     }
 
 }

@@ -138,18 +138,7 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.employeeNum").value(expected.getEmployeeNum()));
 
     }
-    @Test
-    void should_return_not_found_when_updateCompany_given_invalid_companyID() throws Exception {
-        //given
 
-        Company company1 = new Company("companyA", 1);
-        companyRepository.save(company1);
-        companyRepository.deleteAll();
-        mockMvc.perform(put("/companies/"+company1.getCompanyID()))
-                .andExpect(status().isBadRequest());
-
-
-    }
     @Test
     void should_return_empty_list_when_getAll_given_after_deleted_company() throws Exception {
         //given

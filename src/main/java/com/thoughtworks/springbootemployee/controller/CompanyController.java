@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.Exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -42,12 +43,12 @@ public class CompanyController {
         return companyService.createCompany(updateCompany);
     }
     @PutMapping("/{companyID}")
-    public Company updateCompany(@PathVariable String companyID, @RequestBody Company company) {
+    public Company updateCompany(@PathVariable String companyID, @RequestBody Company company) throws CompanyNotFoundException {
         return companyService.updateCompany(companyID,company);
     }
 
     @DeleteMapping("/{companyID}")@ResponseStatus(HttpStatus.OK)
-    public void deleteCompany(@PathVariable String companyID) {
+    public void deleteCompany(@PathVariable String companyID) throws CompanyNotFoundException {
         companyService.deleteCompany(companyID);
     }
 

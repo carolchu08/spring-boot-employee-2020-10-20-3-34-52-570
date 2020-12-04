@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.EmployeeNotFoundException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
@@ -145,9 +146,9 @@ public class EmployeeServiceTest {
         //given
 
         //when
-        employeeService.deleteEmployee("123");
         //then
-        verify(employeeRepository, times(1)).deleteById("123");
+        Exception exception = assertThrows(EmployeeNotFoundException.class,()->employeeService.deleteEmployee("123"));
+        assertEquals("Employee Not Found", exception.getMessage());
     }
 
 
