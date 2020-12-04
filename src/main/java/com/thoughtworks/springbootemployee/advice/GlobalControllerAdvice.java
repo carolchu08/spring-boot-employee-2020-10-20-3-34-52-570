@@ -17,14 +17,8 @@ public class GlobalControllerAdvice {
 
     }
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({CompanyNotFoundException.class})
-    public ErrorResponse handleCompanyNotFound(ResponseStatusException exception){
-        return new ErrorResponse(exception.getMessage(), HttpStatus.NOT_FOUND.name());
-
-    }
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({EmployeeNotFoundException.class})
-    public ErrorResponse handleEmployeeNotFound(ResponseStatusException exception){
+    @ExceptionHandler({CompanyNotFoundException.class,EmployeeNotFoundException.class})
+    public ErrorResponse handleCompanyNotFound(Exception exception){
         return new ErrorResponse(exception.getMessage(), HttpStatus.NOT_FOUND.name());
 
     }

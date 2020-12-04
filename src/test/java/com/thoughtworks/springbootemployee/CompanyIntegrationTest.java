@@ -138,7 +138,21 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$.employeeNum").value(expected.getEmployeeNum()));
 
     }
+    @Test
+    void should_return_not_found_when_updateCompany_given_invalid_companyID() throws Exception {
+        //given
+        String updateAsJson ="{\n" +
+                "    \"companyName\": \"companyE\",\n" +
+                "    \"employeeNum\":\"30\"\n" +
+                "}";
 
+        Company company1 = new Company("companyA", 1);
+        companyRepository.save(company1);
+        companyRepository.deleteAll();
+        mockMvc.perform(put("/companies/"+company1.getCompanyID()).contentType(APPLICATION_JSON).content(updateAsJson))
+                .andExpect(status().isNotFound());
+
+    }
     @Test
     void should_return_empty_list_when_getAll_given_after_deleted_company() throws Exception {
         //given
