@@ -1,8 +1,7 @@
 package com.thoughtworks.springbootemployee;
 
+import com.thoughtworks.springbootemployee.dto.CompanyResponse;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.CompanyResult;
-import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -38,7 +37,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_all_company_when_getAll_given_all_company() throws Exception{
         //given
-        companyRepository.save(new Company("companyA","20"));
+        companyRepository.save(new Company("companyA"));
 
 
         //when
@@ -105,7 +104,7 @@ public class CompanyIntegrationTest {
         //when
         //then
             String createAsJson ="{\n" +
-                    "    \"companyName\": \"companyA\"\n" +
+                    "    \"companyName\":\"companyA\"\n" +
                     "}";
             mockMvc.perform(post("/companies")
                     .contentType(APPLICATION_JSON)
@@ -122,7 +121,7 @@ public class CompanyIntegrationTest {
 
         Company company1 = new Company("companyA");
         companyRepository.save(company1);
-        CompanyResult expected = new CompanyResult("companyE",company1.getCompanyID(),new ArrayList<>());
+        CompanyResponse expected = new CompanyResponse("companyE",company1.getCompanyID(),new ArrayList<>());
         String updateAsJson ="{\n" +
                 "    \"companyName\": \"companyE\"\n" +
                 "}";

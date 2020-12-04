@@ -1,8 +1,10 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.Exception.CompanyNotFoundException;
+import com.thoughtworks.springbootemployee.dto.CompanyRequest;
+import com.thoughtworks.springbootemployee.dto.CompanyResponse;
+import com.thoughtworks.springbootemployee.mapping.CompanyMapper;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.CompanyResult;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/companies")
@@ -18,15 +22,17 @@ public class CompanyController {
     private List<Company> company = new ArrayList<>();
     @Autowired
     private CompanyService companyService;
+    @Autowired
+    private CompanyMapper companyMapper;
 
     @GetMapping
-    public List<CompanyResult> getAll() {
-        return companyService.getAll();
+    public List<CompanyResponse> getAll() {
+        return companyService.getAll().stream().map(companyMapper::toResponse).collect(Collectors.toList());
     }
 
     @GetMapping("/{companyID}")
-    public CompanyResult getSpecificCompany(@PathVariable String companyID) {
-        return companyService.getSpecificCompany(companyID);
+    public CompanyResponse getSpecificCompany(@PathVariable String companyID) {
+        return companyMapper.toResponse(companyService.getSpecificCompany(companyID));
     }
 
     @GetMapping("/{companyID}/employees")
@@ -35,17 +41,17 @@ public class CompanyController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<CompanyResult> getAllCompany(@RequestParam int page, @RequestParam int pageSize) {
-        return companyService.getAllCompanyWithPage(page, pageSize);
+    public List<CompanyResponse> getAllCompany(@RequestParam int page, @RequestParam int pageSize) {
+        return companyService.getAllCompanyWithPage(page, pageSize).stream().map(companyMapper::toResponse).collect(Collectors.toList());
     }
 
     @PostMapping
-    public Company createCompany(@RequestBody Company updateCompany) {
-        return companyService.createCompany(updateCompany);
+    public CompanyResponse createCompany(@RequestBody CompanyRequest updateCompany) {
+        return companyMapper.toResponse(companyService.createCompany(companyMapper.toEntity(updateCompany)));
     }
     @PutMapping("/{companyID}")
-    public Company updateCompany(@PathVariable String companyID, @RequestBody Company company) throws CompanyNotFoundException {
-        return companyService.updateCompany(companyID,company);
+    public CompanyResponse updateCompany(@PathVariable String companyID, @RequestBody Company company) throws CompanyNotFoundException {
+        return companyMapper.toResponse(companyService.updateCompany(companyID,company));
     }
 
     @DeleteMapping("/{companyID}")@ResponseStatus(HttpStatus.OK)

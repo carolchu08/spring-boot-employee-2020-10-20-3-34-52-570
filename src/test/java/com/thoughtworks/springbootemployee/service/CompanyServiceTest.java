@@ -2,7 +2,6 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.Exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
-import com.thoughtworks.springbootemployee.model.CompanyResult;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -40,7 +39,7 @@ public class CompanyServiceTest {
         when(companyRepository.findAll()).thenReturn(expected);
 
         //when
-        List<CompanyResult> actual = companyService.getAll();
+        List<Company> actual = companyService.getAll();
 
 
         //then
@@ -55,7 +54,7 @@ public class CompanyServiceTest {
         when(companyRepository.findById("123")).thenReturn(java.util.Optional.of(expected));
 
         //when
-        CompanyResult actual = companyService.getSpecificCompany("123");
+        Company actual = companyService.getSpecificCompany("123");
 
 
         //then
@@ -107,7 +106,7 @@ public class CompanyServiceTest {
 
         when(companyRepository.findAll()).thenReturn(companies);
         //when
-        List<CompanyResult> actual = companyService.getAllCompanyWithPage(1, 2);
+        List<Company> actual = companyService.getAllCompanyWithPage(1, 2);
 
         //then
         assertEquals(2, actual.size());
