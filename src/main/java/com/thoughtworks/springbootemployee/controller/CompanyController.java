@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.Exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.CompanyResult;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,12 @@ public class CompanyController {
     private CompanyService companyService;
 
     @GetMapping
-    public List<Company> getAll() {
+    public List<CompanyResult> getAll() {
         return companyService.getAll();
     }
 
     @GetMapping("/{companyID}")
-    public Company getSpecificCompany(@PathVariable String companyID) {
+    public CompanyResult getSpecificCompany(@PathVariable String companyID) {
         return companyService.getSpecificCompany(companyID);
     }
 
@@ -34,7 +35,7 @@ public class CompanyController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public List<Company> getAllCompany(@RequestParam int page, @RequestParam int pageSize) {
+    public List<CompanyResult> getAllCompany(@RequestParam int page, @RequestParam int pageSize) {
         return companyService.getAllCompanyWithPage(page, pageSize);
     }
 

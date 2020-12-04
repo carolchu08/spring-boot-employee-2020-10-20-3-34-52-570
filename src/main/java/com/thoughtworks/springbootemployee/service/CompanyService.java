@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.Exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.CompanyResult;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -21,12 +22,14 @@ public class CompanyService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public List<Company> getAll() {
-        return companyRepository.findAll();
+    public List<CompanyResult> getAll() {
+        return companyRepository.findAll().stream().map(company -> new CompanyResult(company.getCompanyName(), company.getCompanyID(), this.getEmployeesWithSpecificCompany(company.getCompanyID()))).collect(Collectors.toList());
     }
 
-    public Company getSpecificCompany(String companyID) {
-        return companyRepository.findById(companyID).orElseThrow(RuntimeException::new);
+    public CompanyResult getSpecificCompany(String companyID) {
+        Company company = companyRepository.findById(companyID).orElseThrow(RuntimeException::new);
+       return new CompanyResult(company.getCompanyName(),company.getCompanyID(),this.getEmployeesWithSpecificCompany(company.getCompanyID()));
+
     }
 
     public List<Employee> getEmployeesWithSpecificCompany(String companyID) {
@@ -34,8 +37,8 @@ public class CompanyService {
             return employeeRepository.findAllByCompanyID(companyID);
     }
 
-    public List<Company> getAllCompanyWithPage(int page, int pageSize) {
-        return companyRepository.findAll().stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+    public List<CompanyResult> getAllCompanyWithPage(int page, int pageSize) {
+        return getAll().stream().skip((page - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
     }
 
 

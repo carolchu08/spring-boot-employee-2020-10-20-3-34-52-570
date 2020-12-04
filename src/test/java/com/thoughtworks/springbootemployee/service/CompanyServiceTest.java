@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.Exception.CompanyNotFoundException;
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.CompanyResult;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -35,11 +36,11 @@ public class CompanyServiceTest {
     @Test
     void should_return_all_company_when_getAll_given_all_company() {
         //given
-        List<Company> expected = Collections.singletonList(new Company("Name1", "123", 1));
+        List<Company> expected = Collections.singletonList(new Company("Name1", "123"));
         when(companyRepository.findAll()).thenReturn(expected);
 
         //when
-        List<Company> actual = companyService.getAll();
+        List<CompanyResult> actual = companyService.getAll();
 
 
         //then
@@ -50,11 +51,11 @@ public class CompanyServiceTest {
     @Test
     void should_return_specific_company_when_getSpecificCompany_given_companyID_123() {
         //given
-        Company expected = new Company("company a", "123", 1);
+        Company expected = new Company("company a", "123");
         when(companyRepository.findById("123")).thenReturn(java.util.Optional.of(expected));
 
         //when
-        Company actual = companyService.getSpecificCompany("123");
+        CompanyResult actual = companyService.getSpecificCompany("123");
 
 
         //then
@@ -96,9 +97,9 @@ public class CompanyServiceTest {
     @Test
     void should_return_2_companies_when_getAllCompanyWithPagination_given_employees_list_is_longer_than_2_and_pageNumber_is_1_and_pageSize_is_2() {
         //given
-        Company company1 = new Company("Name1", "123", 4);
-        Company company2 = new Company("Name2", "111", 1);
-        Company company3 = new Company("Name3", "100", 1);
+        Company company1 = new Company("Name1", "123" );
+        Company company2 = new Company("Name2", "111");
+        Company company3 = new Company("Name3", "100");
         List<Company> companies = new ArrayList<>();
         companies.add(company1);
         companies.add(company2);
@@ -106,7 +107,7 @@ public class CompanyServiceTest {
 
         when(companyRepository.findAll()).thenReturn(companies);
         //when
-        List<Company> actual = companyService.getAllCompanyWithPage(1, 2);
+        List<CompanyResult> actual = companyService.getAllCompanyWithPage(1, 2);
 
         //then
         assertEquals(2, actual.size());
@@ -115,7 +116,7 @@ public class CompanyServiceTest {
     @Test
     void should_return_created_company_when_createCompany_given_no_company_in_database_and_a_new_company() {
         //given
-        Company expectedCompany = new Company("Name1", "123", 1);
+        Company expectedCompany = new Company("Name1", "123");
         when(companyRepository.save(expectedCompany)).thenReturn(expectedCompany);
         //when
         Company actual = companyService.createCompany(expectedCompany);
@@ -129,9 +130,9 @@ public class CompanyServiceTest {
     void should_return_updated_company_when_updateCompany_given_companyID() throws CompanyNotFoundException {
         //given
 
-        Company updateCompany = new Company("Name1", "123", 1);
-        Company originalCompany = new Company("Name2", "123", 25);
-        Company expectedCompany = new Company("Name1", "123", 1);
+        Company updateCompany = new Company("Name1", "123");
+        Company originalCompany = new Company("Name2", "123");
+        Company expectedCompany = new Company("Name1", "123");
         when(companyRepository.findById("123")).thenReturn(Optional.of(originalCompany));
         //when
         companyService.updateCompany("123", updateCompany);
@@ -142,14 +143,13 @@ public class CompanyServiceTest {
 
         final Company company = companyArgumentCaptor.getValue();
         assertEquals(expectedCompany.getCompanyID(), company.getCompanyID());
-        assertEquals(expectedCompany.getEmployeeNum(), company.getEmployeeNum());
 
     }
 
     @Test
     void should_return_Company_Not_Found_when_updateCompany_given_invalid_companyID()  {
         //given
-        Company updateCompany = new Company("Name1", "123", 1);
+        Company updateCompany = new Company("Name1", "123");
         when(companyRepository.findById("100")).thenReturn(Optional.empty());
         //when
         //Company actual = companyService.updateCompany("100", updateCompany);

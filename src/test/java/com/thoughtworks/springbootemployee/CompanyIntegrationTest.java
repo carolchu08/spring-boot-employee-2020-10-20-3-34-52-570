@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.CompanyResult;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +38,7 @@ public class CompanyIntegrationTest {
     @Test
     public void should_return_all_company_when_getAll_given_all_company() throws Exception{
         //given
-        companyRepository.save(new Company("companyA",20));
+        companyRepository.save(new Company("companyA","20"));
 
 
         //when
@@ -44,7 +47,7 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].companyID").isString())
                 .andExpect(jsonPath("$[0].companyName").value("companyA"))
-                .andExpect(jsonPath("$[0].employeeNum").value(20));
+                .andExpect(jsonPath("$[0].employeeNum").value(0));
 
 
 
@@ -52,7 +55,7 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_specific_company_when_getSpecificCompany_given_companyID_123() throws Exception {
         //given
-        Company expected = new Company("companyA", 1);
+        Company expected = new Company("companyA", "1");
         companyRepository.save(expected);
 
         //when
@@ -60,7 +63,7 @@ public class CompanyIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.companyID").isString())
                 .andExpect(jsonPath("$.companyName").value("companyA"))
-                .andExpect(jsonPath("$.employeeNum").value(1));
+                .andExpect(jsonPath("$.employeeNum").value(0));
 
 
         //then
@@ -68,9 +71,9 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_2_companies_when_getAllCompanyWithPagination_given_employees_list_is_longer_than_2_and_pageNumber_is_1_and_pageSize_is_2() throws Exception {
         //given
-        Company company1 = new Company("Name1",  4);
-        Company company2 = new Company("Name2",  1);
-        Company company3 = new Company("Name3",  1);
+        Company company1 = new Company("Name1",  "4");
+        Company company2 = new Company("Name2",  "1");
+        Company company3 = new Company("Name3",  "3");
         companyRepository.save(company1);
         companyRepository.save(company2);
         companyRepository.save(company3);
@@ -81,15 +84,14 @@ public class CompanyIntegrationTest {
         mockMvc.perform(get("/companies?page=1&pageSize=2"))
                 .andExpect(jsonPath("$[0].companyID").isString())
                 .andExpect(jsonPath("$[0].companyName").value("Name1"))
-                .andExpect(jsonPath("$[0].employeeNum").value(4))
                 .andExpect(jsonPath("$[1].companyID").isString())
-                .andExpect(jsonPath("$[1].companyName").value("Name2"))
-                .andExpect(jsonPath("$[1].employeeNum").value(1));
+                .andExpect(jsonPath("$[1].companyName").value("Name2"));
+
     }
     @Test
     void should_return_removed_employee_when_deleteEmployee_given_valid_companyID() throws Exception {
         //given
-        Company company1 = new Company("Name1",  4);
+        Company company1 = new Company("Name1",  "4");
         companyRepository.save(company1);
         //when
         mockMvc.perform(delete("/companies/"+company1.getCompanyID()))
@@ -103,15 +105,14 @@ public class CompanyIntegrationTest {
         //when
         //then
             String createAsJson ="{\n" +
-                    "    \"companyName\": \"companyA\",\n" +
-                    "    \"employeeNum\":\"1\"\n" +
+                    "    \"companyName\": \"companyA\"\n" +
                     "}";
             mockMvc.perform(post("/companies")
                     .contentType(APPLICATION_JSON)
                     .content(createAsJson))
                     .andExpect(jsonPath("$.companyID").isString())
-                    .andExpect(jsonPath("$.companyName").value("companyA"))
-                    .andExpect(jsonPath("$.employeeNum").value(1));
+                    .andExpect(jsonPath("$.companyName").value("companyA"));
+
 
 
     }
@@ -119,37 +120,32 @@ public class CompanyIntegrationTest {
     void should_return_updated_company_when_updateCompany_given_companyID() throws Exception {
         //given
 
-        Company company1 = new Company("companyA", 1);
-        Company company2 = new Company("companyB",  25);
-        Company company3 = new Company("companyC",  1);
+        Company company1 = new Company("companyA");
         companyRepository.save(company1);
-        companyRepository.save(company2);
-        companyRepository.save(company3);
-        Company expected = new Company("companyE",30);
+        CompanyResult expected = new CompanyResult("companyE",company1.getCompanyID(),new ArrayList<>());
         String updateAsJson ="{\n" +
-                "    \"companyName\": \"companyE\",\n" +
-                "    \"employeeNum\":\"30\"\n" +
+                "    \"companyName\": \"companyE\"\n" +
                 "}";
         mockMvc.perform(put("/companies/"+company1.getCompanyID())
                 .contentType(APPLICATION_JSON)
                 .content(updateAsJson))
                 .andExpect(jsonPath("$.companyID").value(company1.getCompanyID()))
-                .andExpect(jsonPath("$.companyName").value(expected.getCompanyName()))
-                .andExpect(jsonPath("$.employeeNum").value(expected.getEmployeeNum()));
+                .andExpect(jsonPath("$.companyName").value(expected.getCompanyName()));
 
     }
     @Test
     void should_return_not_found_when_updateCompany_given_invalid_companyID() throws Exception {
         //given
         String updateAsJson ="{\n" +
-                "    \"companyName\": \"companyE\",\n" +
-                "    \"employeeNum\":\"30\"\n" +
+                "    \"companyName\":\"companyE\"\n" +
                 "}";
 
-        Company company1 = new Company("companyA", 1);
-        companyRepository.save(company1);
+        Company company1 = new Company("companyA");
+        Company expected = companyRepository.save(company1);
         companyRepository.deleteAll();
-        mockMvc.perform(put("/companies/"+company1.getCompanyID()).contentType(APPLICATION_JSON).content(updateAsJson))
+        mockMvc.perform(put("/companies/"+expected.getCompanyID())
+                .contentType(APPLICATION_JSON)
+                .content(updateAsJson))
                 .andExpect(status().isNotFound());
 
     }
@@ -158,7 +154,7 @@ public class CompanyIntegrationTest {
         //given
         //when
         //then
-        Company company3 = new Company("companyC",  1);
+        Company company3 = new Company("companyC",  "1");
         companyRepository.save(company3);
 
         mockMvc
@@ -174,7 +170,7 @@ public class CompanyIntegrationTest {
                 .andExpect(content().string("[]"));
     }
 
-  @Test
+/*  @Test
   public void should_return_employee_list_when_get_company_employee_list_given_company_and_employees() throws Exception {
       //given
       Company company = new Company();
@@ -192,5 +188,5 @@ public class CompanyIntegrationTest {
               .andExpect(jsonPath("$", hasSize(2)))
               .andExpect(jsonPath("$[0].employeeName").value("employee1"))
               .andExpect(jsonPath("$[1].employeeName").value("employee2"));
-  }
+  }*/
 }

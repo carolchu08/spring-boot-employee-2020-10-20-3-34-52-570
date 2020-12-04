@@ -10,4 +10,12 @@ public class ErrorResponse {
         this.status = status;
 
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public String getStatus() {
+        return status;
+    }
 }

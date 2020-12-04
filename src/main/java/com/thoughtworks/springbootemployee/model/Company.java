@@ -9,19 +9,16 @@ import java.util.List;
 @Document
 public class Company {
     //@MongoId(FieldType.OBJECT_ID)
-    @Id
+ @Id
     private String companyID;
     private String companyName;
-    private Integer employeeNum;
 
-    public Company(String companyName, String companyID, Integer employeeNum) {
+    public Company(String companyName, String companyID) {
         this.companyName = companyName;
-        this.employeeNum = employeeNum;
         this.companyID = companyID;
     }
-    public Company(String companyName, Integer employeeNum) {
+    public Company(String companyName) {
         this.companyName = companyName;
-        this.employeeNum = employeeNum;
     }
 
     public Company() {
@@ -31,9 +28,6 @@ public class Company {
         return companyName;
     }
 
-    public Integer getEmployeeNum() {
-        return employeeNum;
-    }
 
 
     public String getCompanyID() {
@@ -42,10 +36,6 @@ public class Company {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public void setEmployeeNum(Integer employeeNum) {
-        this.employeeNum = employeeNum;
     }
 
     public void setCompanyID(String companyID) {
