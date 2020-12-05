@@ -7,17 +7,16 @@ import com.thoughtworks.springbootemployee.mapping.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    private List<Employee> employees = new ArrayList<>();
     @Autowired
     private EmployeesService employeesService;
     @Autowired
@@ -45,14 +44,15 @@ public class EmployeeController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public EmployeeResponse createNewEmployee(@RequestBody EmployeeRequest employeeRequest) {
-       Employee employee = employeesService.createEmployee(employeeMapper.toEntity(employeeRequest));
-       return employeeMapper.toResponse(employee);
+        Employee employee = employeesService.createEmployee(employeeMapper.toEntity(employeeRequest));
+        return employeeMapper.toResponse(employee);
     }
 
     @PutMapping("/{employeeID}")
     public EmployeeResponse updateEmployee(@PathVariable String employeeID, @RequestBody EmployeeRequest employeeRequest) {
-        return employeeMapper.toResponse(employeesService.updateEmployee(employeeID,employeeMapper.toEntity(employeeRequest)));
+        return employeeMapper.toResponse(employeesService.updateEmployee(employeeID, employeeMapper.toEntity(employeeRequest)));
     }
 
     @DeleteMapping("/{employeeID}")

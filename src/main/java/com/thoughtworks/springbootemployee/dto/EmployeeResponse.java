@@ -11,13 +11,13 @@ public class EmployeeResponse {
     public EmployeeResponse() {
     }
 
-    public EmployeeResponse(String employeeName, Integer age, String gender, Integer salary,String companyID,String employeeID) {
+    public EmployeeResponse(String employeeName, Integer age, String gender, Integer salary, String companyID, String employeeID) {
         this.employeeName = employeeName;
         this.age = age;
         this.gender = gender;
         this.salary = salary;
         this.employeeID = employeeID;
-        this.companyID =companyID;
+        this.companyID = companyID;
 
     }
 

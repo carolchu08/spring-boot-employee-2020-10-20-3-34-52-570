@@ -10,12 +10,12 @@ public class EmployeeRequest {
     public EmployeeRequest() {
     }
 
-    public EmployeeRequest(String employeeName, Integer age, Integer salary,String gender,String companyID) {
+    public EmployeeRequest(String employeeName, Integer age, Integer salary, String gender, String companyID) {
         this.employeeName = employeeName;
         this.age = age;
         this.gender = gender;
         this.salary = salary;
-        this.companyID =companyID;
+        this.companyID = companyID;
     }
 
     public String getEmployeeName() {

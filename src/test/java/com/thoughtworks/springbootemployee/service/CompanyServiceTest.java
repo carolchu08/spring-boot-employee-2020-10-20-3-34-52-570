@@ -24,8 +24,6 @@ import static org.mockito.Mockito.*;
 public class CompanyServiceTest {
     @InjectMocks
     private CompanyService companyService;
-    @InjectMocks
-    private EmployeesService employeesService;
     @Mock
     private CompanyRepository companyRepository;
     @Mock
@@ -96,7 +94,7 @@ public class CompanyServiceTest {
     @Test
     void should_return_2_companies_when_getAllCompanyWithPagination_given_employees_list_is_longer_than_2_and_pageNumber_is_1_and_pageSize_is_2() {
         //given
-        Company company1 = new Company("Name1", "123" );
+        Company company1 = new Company("Name1", "123");
         Company company2 = new Company("Name2", "111");
         Company company3 = new Company("Name3", "100");
         List<Company> companies = new ArrayList<>();
@@ -146,13 +144,13 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_Company_Not_Found_when_updateCompany_given_invalid_companyID()  {
+    void should_return_Company_Not_Found_when_updateCompany_given_invalid_companyID() {
         //given
         Company updateCompany = new Company("Name1", "123");
         when(companyRepository.findById("100")).thenReturn(Optional.empty());
         //when
         //Company actual = companyService.updateCompany("100", updateCompany);
-        Exception exception = assertThrows(CompanyNotFoundException.class,()->companyService.updateCompany("100", updateCompany));
+        Exception exception = assertThrows(CompanyNotFoundException.class, () -> companyService.updateCompany("100", updateCompany));
 
         //then
         assertEquals("Company Not Found", exception.getMessage());
@@ -164,15 +162,16 @@ public class CompanyServiceTest {
         //when
 
         //then
-        Exception exception = assertThrows(CompanyNotFoundException.class,()-> companyService.deleteCompany("123"));
+        Exception exception = assertThrows(CompanyNotFoundException.class, () -> companyService.deleteCompany("123"));
         assertEquals("Company Not Found", exception.getMessage());
     }
+
     @Test
-    void  should_throw_CompanyNotFoundException_and_have_a_company_removed_when_remove() throws CompanyNotFoundException {
+    void should_throw_CompanyNotFoundException_and_have_a_company_removed_when_remove() throws CompanyNotFoundException {
         //when
 
         //then
-        Exception exception = assertThrows(CompanyNotFoundException.class,()-> companyService.deleteCompany("123"));
+        Exception exception = assertThrows(CompanyNotFoundException.class, () -> companyService.deleteCompany("123"));
         assertEquals("Company Not Found", exception.getMessage());
     }
 

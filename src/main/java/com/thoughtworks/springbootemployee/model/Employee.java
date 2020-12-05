@@ -17,7 +17,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String employeeName, String employeeID, Integer age, String gender, Integer salary,String companyID) {
+    public Employee(String employeeName, String employeeID, Integer age, String gender, Integer salary, String companyID) {
         this.employeeName = employeeName;
         this.employeeID = employeeID;
         this.age = age;
@@ -25,6 +25,7 @@ public class Employee {
         this.salary = salary;
         this.companyID = companyID;
     }
+
     public Employee(String employeeName, Integer age, String gender, Integer salary, String companyID) {
         this.employeeName = employeeName;
         this.age = age;

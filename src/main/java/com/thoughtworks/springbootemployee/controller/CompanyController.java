@@ -11,15 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
-    private List<Company> company = new ArrayList<>();
     @Autowired
     private CompanyService companyService;
     @Autowired
@@ -46,15 +43,18 @@ public class CompanyController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public CompanyResponse createCompany(@RequestBody CompanyRequest updateCompany) {
         return companyMapper.toResponse(companyService.createCompany(companyMapper.toEntity(updateCompany)));
     }
+
     @PutMapping("/{companyID}")
     public CompanyResponse updateCompany(@PathVariable String companyID, @RequestBody Company company) throws CompanyNotFoundException {
-        return companyMapper.toResponse(companyService.updateCompany(companyID,company));
+        return companyMapper.toResponse(companyService.updateCompany(companyID, company));
     }
 
-    @DeleteMapping("/{companyID}")@ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{companyID}")
+    @ResponseStatus(HttpStatus.OK)
     public void deleteCompany(@PathVariable String companyID) throws CompanyNotFoundException {
         companyService.deleteCompany(companyID);
     }

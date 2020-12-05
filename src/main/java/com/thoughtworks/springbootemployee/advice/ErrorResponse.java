@@ -1,12 +1,12 @@
 package com.thoughtworks.springbootemployee.advice;
 
 public class ErrorResponse {
-    private  String message;
-    private  String status;
+    private final String message;
+    private final String status;
 
 
     public ErrorResponse(String message, String status) {
-        this.message= message;
+        this.message = message;
         this.status = status;
 
     }

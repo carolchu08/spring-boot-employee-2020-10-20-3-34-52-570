@@ -6,12 +6,9 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,13 +23,13 @@ public class CompanyService {
     }
 
     public Company getSpecificCompany(String companyID) {
-         return companyRepository.findById(companyID).orElseThrow(RuntimeException::new);
+        return companyRepository.findById(companyID).orElseThrow(RuntimeException::new);
 
     }
 
     public List<Employee> getEmployeesWithSpecificCompany(String companyID) {
 
-            return employeeRepository.findAllByCompanyID(companyID);
+        return employeeRepository.findAllByCompanyID(companyID);
     }
 
     public List<Company> getAllCompanyWithPage(int page, int pageSize) {
@@ -46,14 +43,14 @@ public class CompanyService {
 
     public Company updateCompany(String companyID, Company updateCompanyInfo) throws CompanyNotFoundException {
         companyRepository.findById(companyID).orElseThrow(CompanyNotFoundException::new);
-            updateCompanyInfo.setCompanyID(companyID);
-            return companyRepository.save(updateCompanyInfo);
+        updateCompanyInfo.setCompanyID(companyID);
+        return companyRepository.save(updateCompanyInfo);
 
     }
 
     public void deleteCompany(String companyID) throws CompanyNotFoundException {
         Company originalCompany = companyRepository.findById(companyID).orElseThrow(CompanyNotFoundException::new);
-            companyRepository.deleteById(companyID);
+        companyRepository.deleteById(companyID);
 
     }
 }

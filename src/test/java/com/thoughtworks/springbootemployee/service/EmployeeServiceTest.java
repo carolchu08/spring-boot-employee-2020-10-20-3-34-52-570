@@ -32,7 +32,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_all_employees_when_getAll_given_all_employees() {
         //given
-        List<Employee> expected = Arrays.asList(new Employee("Peter", "123", 13, "male", 10000,"1"));
+        List<Employee> expected = Arrays.asList(new Employee("Peter", "123", 13, "male", 10000, "1"));
         when(employeeRepository.findAll()).thenReturn(expected);
 
         //when
@@ -45,9 +45,9 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_the_employee_when_getOne_given_a_valid_employee_id()  {
+    void should_return_the_employee_when_getOne_given_a_valid_employee_id() {
         //given
-        Employee expectedEmployee = new Employee("Ken", "123", 15, "male", 1200,"1");
+        Employee expectedEmployee = new Employee("Ken", "123", 15, "male", 1200, "1");
         when(employeeRepository.findById(any())).thenReturn(java.util.Optional.of(expectedEmployee));
 
 
@@ -60,9 +60,9 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_null_when_getOne_given_a_invalid_employee_id()  {
+    void should_return_null_when_getOne_given_a_invalid_employee_id() {
         //given
-        Employee expectedEmployee = new Employee("Ken", "123", 15, "male", 1200,"1");
+        Employee expectedEmployee = new Employee("Ken", "123", 15, "male", 1200, "1");
         when(employeeRepository.findById("111")).thenReturn(Optional.empty());
 
 
@@ -70,7 +70,7 @@ public class EmployeeServiceTest {
         Exception exception = assertThrows(ResponseStatusException.class, () -> employeeService.getOneEmployee("111"));
 
         //then
-        assertEquals( HttpStatus.NOT_FOUND + " \"Information Not Found\"",exception.getMessage());
+        assertEquals(HttpStatus.NOT_FOUND + " \"Information Not Found\"", exception.getMessage());
 
     }
 
@@ -78,10 +78,10 @@ public class EmployeeServiceTest {
     @Test
     void should_return_3_employees_when_getAllEmployeesWithPagination_given_employees_list_is_longer_than_3_and_pageNumber_is_1_and_pageSize_is_3() {
         //given
-        Employee employee1 = new Employee("Name1", "1", 13, "male", 100,"1");
-        Employee employee2 = new Employee("Name2", "2", 13, "male", 100,"1");
-        Employee employee3 = new Employee("Name3", "3", 13, "male", 100,"1");
-        Employee employee4 = new Employee("Name4", "4", 13, "male", 100,"1");
+        Employee employee1 = new Employee("Name1", "1", 13, "male", 100, "1");
+        Employee employee2 = new Employee("Name2", "2", 13, "male", 100, "1");
+        Employee employee3 = new Employee("Name3", "3", 13, "male", 100, "1");
+        Employee employee4 = new Employee("Name4", "4", 13, "male", 100, "1");
         List<Employee> expectedEmployees = new ArrayList<>();
         expectedEmployees.add(employee1);
         expectedEmployees.add(employee2);
@@ -100,7 +100,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_created_employee_when_createEmployee_given_no_employee_in_database_and_a_new_employee() {
         //given
-        Employee expectedEmployee = new Employee("Peter", "123", 13, "male", 2000,"1");
+        Employee expectedEmployee = new Employee("Peter", "123", 13, "male", 2000, "1");
         when(employeeRepository.save(expectedEmployee)).thenReturn(expectedEmployee);
         //when
         Employee actual = employeeService.createEmployee(expectedEmployee);
@@ -123,9 +123,9 @@ public class EmployeeServiceTest {
     @Test
     void should_return_updated_employee_when_updateEmployee_given_employeeID() {
         //given
-        Employee updatedEmployee = new Employee("new name", "3", 20, "male", 999,"1");
-        Employee expected = new Employee("new name", "2", 20, "male", 999,"1");
-        Employee originalEmployee = new Employee("new name", "2", 14, "male", 999,"1");
+        Employee updatedEmployee = new Employee("new name", "3", 20, "male", 999, "1");
+        Employee expected = new Employee("new name", "2", 20, "male", 999, "1");
+        Employee originalEmployee = new Employee("new name", "2", 14, "male", 999, "1");
         when(employeeRepository.findById("2")).thenReturn(Optional.of(originalEmployee));
 
         //when
@@ -147,10 +147,9 @@ public class EmployeeServiceTest {
 
         //when
         //then
-        Exception exception = assertThrows(EmployeeNotFoundException.class,()->employeeService.deleteEmployee("123"));
+        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeService.deleteEmployee("123"));
         assertEquals("Employee Not Found", exception.getMessage());
     }
-
 
 
 }

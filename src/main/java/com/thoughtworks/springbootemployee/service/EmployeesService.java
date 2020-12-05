@@ -1,8 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.Exception.EmployeeNotFoundException;
-import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
-import com.thoughtworks.springbootemployee.dto.EmployeeResponse;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,8 @@ public class EmployeesService {
         return this.employeeRepository.findAll();
     }
 
-    public Employee getOneEmployee(String employeeID)  {
-        return this.employeeRepository.findById(employeeID).orElseThrow(()-> new ResponseStatusException(
+    public Employee getOneEmployee(String employeeID) {
+        return this.employeeRepository.findById(employeeID).orElseThrow(() -> new ResponseStatusException(
                 HttpStatus.NOT_FOUND, "Information Not Found")
         );
 
@@ -47,26 +45,25 @@ public class EmployeesService {
     }
 
     public Employee updateEmployee(String employeeID, Employee updateEmployee) {
-        Employee originalEmployee = employeeRepository.findById(employeeID).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found"));
-            originalEmployee.setAge(updateEmployee.getAge());
-            originalEmployee.setEmployeeName(updateEmployee.getEmployeeName());
-            originalEmployee.setGender(updateEmployee.getGender());
-            originalEmployee.setSalary(updateEmployee.getSalary());
-            originalEmployee.setCompanyID(updateEmployee.getCompanyID());
-            return this.employeeRepository.save(originalEmployee);
+        Employee originalEmployee = employeeRepository.findById(employeeID).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee Not Found"));
+        originalEmployee.setAge(updateEmployee.getAge());
+        originalEmployee.setEmployeeName(updateEmployee.getEmployeeName());
+        originalEmployee.setGender(updateEmployee.getGender());
+        originalEmployee.setSalary(updateEmployee.getSalary());
+        originalEmployee.setCompanyID(updateEmployee.getCompanyID());
+        return this.employeeRepository.save(originalEmployee);
     }
 
     public void deleteEmployee(String employeeID) throws EmployeeNotFoundException {
         Optional<Employee> originalEmployee = employeeRepository.findById(employeeID);
-        if(originalEmployee.isPresent()) {
+        if (originalEmployee.isPresent()) {
             this.employeeRepository.deleteById(employeeID);
-        }
-        else
-        {
+        } else {
             throw new EmployeeNotFoundException();
         }
     }
-    public List <Employee> getEmployeeWithSameCompanyID (String companyID){
+
+    public List<Employee> getEmployeeWithSameCompanyID(String companyID) {
         return employeeRepository.findAllByCompanyID(companyID);
     }
 }

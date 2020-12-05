@@ -8,15 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CompanyMapper {
-    public Company toEntity (CompanyRequest companyRequest){
+    public Company toEntity(CompanyRequest companyRequest) {
         Company company = new Company();
-        BeanUtils.copyProperties(company,companyRequest);
+        BeanUtils.copyProperties(companyRequest, company);
         return company;
 
     }
-    public CompanyResponse toResponse(Company company){
+
+    public CompanyResponse toResponse(Company company) {
         CompanyResponse companyResponse = new CompanyResponse();
-        BeanUtils.copyProperties(company,companyResponse);
+        BeanUtils.copyProperties(company, companyResponse);
         return companyResponse;
     }
 
