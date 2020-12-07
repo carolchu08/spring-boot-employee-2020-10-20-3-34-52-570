@@ -25,10 +25,8 @@ public class EmployeesService {
         return this.employeeRepository.findAll();
     }
 
-    public Employee getOneEmployee(String employeeID) {
-        return this.employeeRepository.findById(employeeID).orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND, "Information Not Found")
-        );
+    public Employee getOneEmployee(String employeeID) throws EmployeeNotFoundException {
+        return this.employeeRepository.findById(employeeID).orElseThrow(EmployeeNotFoundException::new);
 
     }
 
@@ -55,12 +53,8 @@ public class EmployeesService {
     }
 
     public void deleteEmployee(String employeeID) throws EmployeeNotFoundException {
-        Optional<Employee> originalEmployee = employeeRepository.findById(employeeID);
-        if (originalEmployee.isPresent()) {
-            this.employeeRepository.deleteById(employeeID);
-        } else {
-            throw new EmployeeNotFoundException();
-        }
+        this.getOneEmployee(employeeID);
+        this.employeeRepository.deleteById(employeeID);
     }
 
     public List<Employee> getEmployeeWithSameCompanyID(String companyID) {

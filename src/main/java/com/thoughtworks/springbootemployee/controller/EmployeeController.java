@@ -28,7 +28,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeID}")
-    public EmployeeResponse getOneEmployee(@PathVariable String employeeID) {
+    public EmployeeResponse getOneEmployee(@PathVariable String employeeID) throws EmployeeNotFoundException {
         return employeeMapper.toResponse(employeesService.getOneEmployee(employeeID));
 
     }

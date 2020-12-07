@@ -45,7 +45,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_the_employee_when_getOne_given_a_valid_employee_id() {
+    void should_return_the_employee_when_getOne_given_a_valid_employee_id() throws EmployeeNotFoundException {
         //given
         Employee expectedEmployee = new Employee("Ken", "123", 15, "male", 1200, "1");
         when(employeeRepository.findById(any())).thenReturn(java.util.Optional.of(expectedEmployee));
@@ -67,10 +67,10 @@ public class EmployeeServiceTest {
 
 
         //when
-        Exception exception = assertThrows(ResponseStatusException.class, () -> employeeService.getOneEmployee("111"));
+        Exception exception = assertThrows(EmployeeNotFoundException.class, () -> employeeService.getOneEmployee("111"));
 
         //then
-        assertEquals(HttpStatus.NOT_FOUND + " \"Information Not Found\"", exception.getMessage());
+        assertEquals( "Employee Not Found", exception.getMessage());
 
     }
 
