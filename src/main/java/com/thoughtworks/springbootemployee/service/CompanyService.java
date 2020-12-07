@@ -22,8 +22,8 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public Company getSpecificCompany(String companyID) {
-        return companyRepository.findById(companyID).orElseThrow(RuntimeException::new);
+    public Company getSpecificCompany(String companyID) throws CompanyNotFoundException {
+        return companyRepository.findById(companyID).orElseThrow(CompanyNotFoundException::new);
 
     }
 
@@ -42,14 +42,14 @@ public class CompanyService {
     }
 
     public Company updateCompany(String companyID, Company updateCompanyInfo) throws CompanyNotFoundException {
-        companyRepository.findById(companyID).orElseThrow(CompanyNotFoundException::new);
+        this.getSpecificCompany(companyID);
         updateCompanyInfo.setCompanyID(companyID);
         return companyRepository.save(updateCompanyInfo);
 
     }
 
     public void deleteCompany(String companyID) throws CompanyNotFoundException {
-        Company originalCompany = companyRepository.findById(companyID).orElseThrow(CompanyNotFoundException::new);
+        this.getSpecificCompany(companyID);
         companyRepository.deleteById(companyID);
 
     }

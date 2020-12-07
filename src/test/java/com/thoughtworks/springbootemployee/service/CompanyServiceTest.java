@@ -46,7 +46,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_specific_company_when_getSpecificCompany_given_companyID_123() {
+    void should_return_specific_company_when_getSpecificCompany_given_companyID_123() throws CompanyNotFoundException {
         //given
         Company expected = new Company("company a", "123");
         when(companyRepository.findById("123")).thenReturn(java.util.Optional.of(expected));

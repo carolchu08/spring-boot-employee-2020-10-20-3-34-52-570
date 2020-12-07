@@ -28,7 +28,7 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyID}")
-    public CompanyResponse getSpecificCompany(@PathVariable String companyID) {
+    public CompanyResponse getSpecificCompany(@PathVariable String companyID) throws CompanyNotFoundException {
         return companyMapper.toResponse(companyService.getSpecificCompany(companyID));
     }
 
