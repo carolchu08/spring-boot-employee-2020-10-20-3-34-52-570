@@ -33,7 +33,7 @@ public class CompanyServiceTest {
     @Test
     void should_return_all_company_when_getAll_given_all_company() {
         //given
-        List<Company> expected = Collections.singletonList(new Company("Name1", "123"));
+        List<Company> expected = Collections.singletonList(new Company("Name1"));
         when(companyRepository.findAll()).thenReturn(expected);
 
         //when
@@ -63,8 +63,8 @@ public class CompanyServiceTest {
     void should_return_list_of_all_employee_when_getEmployeeWithSpecificCompany_given_companyID_1() {
         //given
         List<Employee> expectedEmployees = new ArrayList<>();
-        Employee employee1 = new Employee("Name1", "121", 12, "male", 200, "1");
-        Employee employee2 = new Employee("Name2", "111", 14, "femail", 2000, "1");
+        Employee employee1 = new Employee("Name1",  12, "male", 200, "1");
+        Employee employee2 = new Employee("Name2", 14, "femail", 2000, "1");
         expectedEmployees.add(employee1);
         expectedEmployees.add(employee2);
         when(employeeRepository.findAllByCompanyID("1")).thenReturn(expectedEmployees);
@@ -80,8 +80,8 @@ public class CompanyServiceTest {
     void should_return_null_when_getEmployeeWithSpecificCompany_given_invalid_companyID() {
         //given
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee("Name1", "121", 12, "male", 200, "1"));
-        employees.add(new Employee("Name2", "111", 14, "femail", 2000, "1"));
+        employees.add(new Employee("Name1", 12, "male", 200, "1"));
+        employees.add(new Employee("Name2", 14, "femail", 2000, "1"));
         when(employeeRepository.findAllByCompanyID("0")).thenReturn(null);
         //when
         List<Employee> actual = companyService.getEmployeesWithSpecificCompany("0");
@@ -94,9 +94,9 @@ public class CompanyServiceTest {
     @Test
     void should_return_2_companies_when_getAllCompanyWithPagination_given_employees_list_is_longer_than_2_and_pageNumber_is_1_and_pageSize_is_2() {
         //given
-        Company company1 = new Company("Name1", "123");
-        Company company2 = new Company("Name2", "111");
-        Company company3 = new Company("Name3", "100");
+        Company company1 = new Company("Name1");
+        Company company2 = new Company("Name2");
+        Company company3 = new Company("Name3");
         List<Company> companies = new ArrayList<>();
         companies.add(company1);
         companies.add(company2);
@@ -113,7 +113,7 @@ public class CompanyServiceTest {
     @Test
     void should_return_created_company_when_createCompany_given_no_company_in_database_and_a_new_company() {
         //given
-        Company expectedCompany = new Company("Name1", "123");
+        Company expectedCompany = new Company("Name1");
         when(companyRepository.save(expectedCompany)).thenReturn(expectedCompany);
         //when
         Company actual = companyService.createCompany(expectedCompany);
@@ -149,7 +149,6 @@ public class CompanyServiceTest {
         Company updateCompany = new Company("Name1", "123");
         when(companyRepository.findById("100")).thenReturn(Optional.empty());
         //when
-        //Company actual = companyService.updateCompany("100", updateCompany);
         Exception exception = assertThrows(CompanyNotFoundException.class, () -> companyService.updateCompany("100", updateCompany));
 
         //then

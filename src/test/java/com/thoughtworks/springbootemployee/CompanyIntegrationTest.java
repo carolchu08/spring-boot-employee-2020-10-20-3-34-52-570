@@ -56,7 +56,7 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_specific_company_when_getSpecificCompany_given_companyID_123() throws Exception {
         //given
-        Company expected = new Company("companyA", "1");
+        Company expected = new Company("companyA");
         companyRepository.save(expected);
 
         //when
@@ -73,9 +73,9 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_2_companies_when_getAllCompanyWithPagination_given_employees_list_is_longer_than_2_and_pageNumber_is_1_and_pageSize_is_2() throws Exception {
         //given
-        Company company1 = new Company("Name1", "4");
-        Company company2 = new Company("Name2", "1");
-        Company company3 = new Company("Name3", "3");
+        Company company1 = new Company("Name1");
+        Company company2 = new Company("Name2");
+        Company company3 = new Company("Name3");
         companyRepository.save(company1);
         companyRepository.save(company2);
         companyRepository.save(company3);
@@ -94,7 +94,7 @@ public class CompanyIntegrationTest {
     @Test
     void should_return_removed_employee_when_deleteEmployee_given_valid_companyID() throws Exception {
         //given
-        Company company1 = new Company("Name1", "4");
+        Company company1 = new Company("Name1");
         companyRepository.save(company1);
         //when
         mockMvc.perform(delete("/companies/" + company1.getCompanyID()))
@@ -161,7 +161,7 @@ public class CompanyIntegrationTest {
         //given
         //when
         //then
-        Company company3 = new Company("companyC", "1");
+        Company company3 = new Company("companyC");
         companyRepository.save(company3);
 
         mockMvc
